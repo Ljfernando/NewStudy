@@ -1,0 +1,179 @@
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+/*
+tr:nth-child(even) {
+    background-color: #dddddd;
+}*/
+
+
+</style>
+
+<div id="pref1">
+
+  <h3>First Aesthetic Preference</h3>
+  <p>
+    All of the following visualizations are using the same dataset.
+  </p>
+
+  <p>
+    Please uniquely rank the following visualizations based on your preference (1 being most preferable and 5 being least preferable). Take into consideration the aesthetic choices in each visualization (i.e., color choices, gridlines or no gridelines, etc.).
+  </p>
+  <table>
+    <tr>
+      <th>Visualization</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+    </tr>
+
+    <tr>
+      <td><img src="../../images/scatterplots/baseR1.png" height=250px width=250px></td>
+      <td> <input type="radio" id="baseR" name="c1" value="1"> </td>
+      <td> <input type="radio" id="baseR" name="c2" value="2"> </td>
+      <td> <input type="radio" id="baseR" name="c3" value="3"> </td>
+      <td> <input type="radio" id="baseR" name="c4" value="4"> </td>
+      <td> <input type="radio" id="baseR" name="c5" value="5"> </td>
+    </tr>
+    <tr>
+      <td><img src="../../images/scatterplots/ggplot1.png" height=250px width=250px></td>
+      <td> <input type="radio" id="ggp" name="c1" value="1"> </td>
+      <td> <input type="radio" id="ggp" name="c2" value="2"> </td>
+      <td> <input type="radio" id="ggp" name="c3" value="3"> </td>
+      <td> <input type="radio" id="ggp" name="c4" value="4"> </td>
+      <td> <input type="radio" id="ggp" name="c5" value="5"> </td>
+    </tr>
+    <tr>
+      <td><img src="../../images/scatterplots/exl1.png" height=250px width=250px></td>
+      <td> <input type="radio" id="exl" name="c1" value="1"> </td>
+      <td> <input type="radio" id="exl" name="c2" value="2"> </td>
+      <td> <input type="radio" id="exl" name="c3" value="3"> </td>
+      <td> <input type="radio" id="exl" name="c4" value="4"> </td>
+      <td> <input type="radio" id="exl" name="c5" value="5"> </td>
+    </tr>
+    <tr>
+      <td><img src="../../images/scatterplots/mpl1.png" height=250px width=250px></td>
+      <td> <input type="radio" id="mpl" name="c1" value="1"> </td>
+      <td> <input type="radio" id="mpl" name="c2" value="2"> </td>
+      <td> <input type="radio" id="mpl" name="c3" value="3"> </td>
+      <td> <input type="radio" id="mpl" name="c4" value="4"> </td>
+      <td> <input type="radio" id="mpl" name="c5" value="5"> </td>
+    </tr>
+    <tr>
+      <td><img src="../../images/scatterplots/tbl1.png" height=250px width=250px></td>
+      <td> <input type="radio" id="tbl" name="c1" value="1"> </td>
+      <td> <input type="radio" id="tbl" name="c2" value="2"> </td>
+      <td> <input type="radio" id="tbl" name="c3" value="3"> </td>
+      <td> <input type="radio" id="tbl" name="c4" value="4"> </td>
+      <td> <input type="radio" id="tbl" name="c5" value="5"> </td>
+    </tr>
+
+  </table>
+
+  <!--OLD VERSION-->
+  <!-- <table>
+    <tr>
+      <td><img src="../../images/scatterplots/baseR1.png" height=250px width=250px></td>
+      <td><img src="../../images/scatterplots/ggplot1.png" height=250px width=250px></td>
+      <td><img src="../../images/scatterplots/exl1.png" height=250px width=250px></td>
+    </tr>
+
+    <tr>
+      <td><input type="number" name="baseR" min=1 max=5 value=0></td>
+      <td><input type="number" name="ggp" min=1 max=5 value=0></td>
+      <td><input type="number" name="exl" min=1 max=5 value=0></td>
+    </tr>
+    <tr>
+      <td><img src="../../images/scatterplots/mpl1.png" height=250px width=250px></td>
+      <td><img src="../../images/scatterplots/tbl1.png" height=250px width=250px></td>
+    </tr>
+    <tr>
+      <td><input type="number" name="mpl" min=1 max=5 value=0></td>
+      <td><input type="number" name="tbl" min=1 max=5 value=0></td>
+    </tr>
+  </table> -->
+    <p>
+      The <strong>next</strong> button will be unclickable until all tools have a single unique ranking.
+    </p>
+</div>
+<script>
+(function() {
+  var data = {};
+
+  //experimentr.startTimer('demo');
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'c1' ? this : null; })
+  .on('change', function() { data.pref1Rank1 = this.id; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'c2' ? this : null; })
+  .on('change', function() { data.pref1Rank2 = this.id; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'c3' ? this : null; })
+  .on('change', function() { data.pref1Rank3 = this.id; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'c4' ? this : null; })
+  .on('change', function() { data.pref1Rank4 = this.id; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'c5' ? this : null; })
+  .on('change', function() { data.pref1Rank5 = this.id; validate(); });
+
+
+  function validate() {
+
+    if(data.pref1Rank1 && data.pref1Rank2 && data.pref1Rank3 && data.pref1Rank4 && data.pref1Rank5){
+      var userRankings = [data.pref1Rank1,
+                          data.pref1Rank2,
+                          data.pref1Rank3,
+                          data.pref1Rank4,
+                          data.pref1Rank5]
+
+      var allTools = "baseR,exl,ggp,mpl,tbl"
+
+      if(allTools == userRankings.sort().toString()){
+        console.log("rankings", userRankings)
+        experimentr.endTimer('demo');
+        experimentr.addData(data);
+        experimentr.release();
+      } else{
+        experimentr.hold();
+      }
+    }
+
+
+    // var userRankings = [+data.pref1BaseR,
+    //                 +data.pref1GGP,
+    //                 +data.pref1EXL,
+    //                 +data.pref1MPL,
+    //                 +data.pref1TBL]
+    //
+    // var allRankings = "1,2,3,4,5" //String representation of possible rankings
+    //
+    // //converting user rankings to sorted string and comparing to above string
+    // if(allRankings == userRankings.sort().toString()){
+    //   console.log("rankings", userRankings)
+    //   experimentr.endTimer('demo');
+    //   experimentr.addData(data);
+    //   experimentr.release();
+    // } else{
+    //   experimentr.hold();
+    // }
+	}
+}());
+</script>

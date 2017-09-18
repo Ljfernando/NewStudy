@@ -1,0 +1,22 @@
+.axis path,
+.axis line{
+  stroke-width: 0px;
+}
+
+.mplMajorGrid line {
+  stroke: #d2d2d2;
+  stroke-width: 1.5px;
+}
+
+.mplMajorGrid path {
+  stroke-width: 0;
+}
+
+/*for the left and right frame*/
+/*Major gridlines already make top and bottom frame*/
+line.border{
+  fill: none;
+  stroke-width: 1.5px;
+  stroke: #d2d2d2;
+
+}

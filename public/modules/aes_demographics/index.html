@@ -1,0 +1,82 @@
+<div id="splom_demographics">
+<p id="demoinstr">
+<h3><strong>Demographics</strong></h3>
+</p>
+
+<div id="age">What is your age?
+    <div id="ages">
+        <input type="radio" id="a1" name="age" value="18-24"> 18 to 24
+        <input type="radio" id="a2" name="age" value="25-44"> 25 to 44
+        <input type="radio" id="a3" name="age" value="45-64"> 45 to 64
+        <input type="radio" id="a4" name="age" value="65+"> 65+
+    </div>
+</div>
+<br>
+<div id="sex">How would you describe yourself?
+    <div id="sexes">
+        <input type="radio" id="s1" name="sex" value="Male"> Male
+        <input type="radio" id="s2" name="sex" value="Female"> Female
+        <input type="radio" id="s3" name="sex" value="Other"> Other
+        <input type="text" id="s4" name="sex">
+    </div>
+</div>
+<br>
+<div id="degree">Please indicate your highest level of education:
+    <div id="degrees">
+        <input type="radio" id="d1" name="degree" value="No degree"> No Degree
+        <input type="radio" id="d2" name="degree" value="High School"> High School Degree or GED
+        <input type="radio" id="d3" name="degree" value="2 Year"> 2 Year College Degree<br>
+        <input type="radio" id="d4" name="degree" value="4 Year"> 4 Year College Degree
+        <input type="radio" id="d5" name="degree" value="Gradudate"> Graduate Degree
+    </div>
+</div>
+<br>
+<div id="job">In what category would your current job fall under:
+    <div id="job">
+        <input type="radio" id="d1" name="job" value="Education"> Education
+        <input type="radio" id="d2" name="job" value="Technology"> Technology
+        <input type="radio" id="d3" name="job" value="Administration"> Administration
+        <input type="radio" id="d4" name="job" value="Sciences"> Sciences
+        <input type="radio" id="d5" name="job" value="Art/Entertainment"> Art/Entertainment
+        <input type="radio" id="d6" name="job" value="Sales/Retail"> Retail
+        <input type="radio" id="d7" name="job" value="Law"> Law
+    </div>
+</div>
+<br>
+
+</div>
+
+
+</div>
+
+<script>
+(function() {
+  var data = {};
+
+  experimentr.startTimer('demo');
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'age' ? this : null; })
+  .on('change', function() { data.age = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'sex' ? this : null; })
+  .on('change', function() { data.sex = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'degree' ? this : null; })
+  .on('change', function() { data.degree = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'job' ? this : null; })
+  .on('change', function() { data.job = this.value; validate(); });
+
+  function validate() {
+	  if(data.age && data.sex && data.degree && data.job) {
+	    experimentr.endTimer('demo');
+	    experimentr.addData(data);
+	    experimentr.release();
+	  }
+	}
+}());
+</script>

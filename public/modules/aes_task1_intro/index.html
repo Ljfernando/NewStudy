@@ -1,0 +1,342 @@
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" type="text/css" href="toolCSS/baseRStyle.css" />
+<!-- <script language="javascript" type="text/javascript" src="../../../toolTemplates/baseRTemplate.js"></script>
+<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
+ -->
+<div id="task1-intro">
+
+<h3>Task 1 Training</h3>
+<p>
+  The next section will ask you to perform the following task: locate the centroid of a specified class.
+</p>
+<p>
+  The centroid of a class is defined as the average x and y coordinates of a given class.
+<p class="center">
+  <strong><div id = "question"></div></strong>
+</p>
+</div>
+  <div id="answer">
+  <button type="button"
+        onclick="realCentroid()">Click for real answer!</button>
+        The yellow circle indicates the actual centroid of the given class.
+
+  </div>
+  <div id="plot"></div>
+
+  <div id="warning"></div>
+
+</div>
+<script>
+
+	//Removes the text select cursor maintains regular cursor during mouse activity
+	document.getElementById( "plot" ).onmousedown = function(event){
+	    event.preventDefault()};
+  /**
+  Qualities of Base R Multi-class Scatterplots
+  - No gridlines
+  - Weirdly placed framed x and y limits
+  - Circles without fill
+  - Outer frame border
+  - Axes tick labels are below y=0 and to the left of x=0
+  **/
+
+  //Gets a random integer between lower and upper limits and returns the class at the random integer index.
+  function getRandomClass(lower, upper) {
+  	console.assert(arguments.length === 2, "getRandomInteger() requires lower and upper parameters.");
+    var randInt = Math.floor(Math.random() * (upper - lower)) + lower;
+
+    var classes = ["A", "B", "C", "D"]
+    //console.log("randInt", randInt);
+  	return classes[randInt];
+  }
+
+  //Given the class in question and data, this returns the centroid coordinates
+  function getClassCentroid(randClass, data){
+    var classData = data.filter(function(d){
+      return d.class == randClass
+      })
+    var xAvg = d3.mean(classData, function(d) {return d.x})
+    var yAvg = d3.mean(classData, function(d) {return d.y})
+    centroid = {"xAvg": xAvg,
+            "yAvg": yAvg}
+    return centroid;
+  }
+
+
+	var margin = {top: 50, right: 50, bottom: 50, left:50};
+	var width = 600 - margin.left - margin.right;
+	var height = 500 - margin.top - margin.bottom;
+
+  var xRange = [1,6,1]
+  var yRange = [1,6,1]
+  var xDom = [1, 5]
+  var yDom = [1,5]
+  var xFormat = false
+  var yFormat = false
+
+	var main = {"clicks" : 0,
+              "startTime":null,
+              "endTime":null,
+              "dataFile": "data/ScatterplotData2.csv",
+              "class": getRandomClass(0, 4)
+            }
+
+  var question = "<strong>Click the plot to activate the centroid indicator circle. Drag the circle to the centroid of class " + main.class + "</strong>"
+
+	document.getElementById("question").innerHTML = question
+
+	var svg;
+
+  var realCentroid;
+
+	var classColors = ["black", "#FF0000", "#33cc33" , "#0000FF"]
+
+	var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
+	.range(classColors);;
+
+
+	  //Returns true if the user choice is within the give range of the chart and false otherwise
+  function isValidCoor(x, y){
+    if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
+      return true;
+    }
+    return false;
+  }
+
+	var x = d3.scaleLinear()
+		.range([margin.left, width]);
+
+	var y = d3.scaleLinear()
+		.range([height, margin.left]);
+
+	//hardcoding domain
+	x.domain(xDom);
+	y.domain(yDom);
+
+
+
+	svg = d3.select('#plot')
+		.append('svg')
+		.attr('width', width + margin.left + margin.right)
+		.attr('height', height + margin.top + margin.bottom)
+		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+		// .on("mousedown", mousedown)
+		// .on("mouseup", mouseup);
+
+	  // Upper Horizontal Line
+  svg.append('line')
+  	.attr('class', 'border')
+  	.attr('x1', margin.left)
+  	.attr('x2', width)
+  	.attr('y1', margin.top)
+  	.attr('y2', margin.top)
+
+
+  //Right verticle Line
+  svg.append('line')
+  	.attr('class', 'border')
+  	.attr('x1', width)
+  	.attr('x2', width)
+  	.attr('y1', margin.top)
+  	.attr('y2', height)
+
+
+
+	var xAxis = d3.axisBottom()
+		.scale(x)
+		.tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
+		.tickSizeOuter(0);
+
+	if(xFormat){
+		xAxis.tickFormat(d3.format(".0f"))
+	}
+
+	var yAxis = d3.axisLeft()
+		.scale(y)
+		.tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
+		.tickSizeOuter(0);
+
+	if(xFormat){
+		yAxis.tickFormat(d3.format(".0f"))
+	}
+
+
+	svg.append('g')
+		.attr('transform', 'translate(0,' + height+ ')')
+		.attr('class', 'x axis')
+		.call(xAxis);
+
+	svg.append('g')
+		.attr('transform', 'translate(' + margin.left + ',0)')
+		.attr('class', 'y axis')
+		.call(yAxis);
+
+	svg.append('text')
+		.attr('x', 5)
+		.attr('y', height/2)
+		.attr('class', 'label')
+		.text('y');
+
+
+	svg.append('text')
+		.attr('x', width/2)
+		.attr('y', height + 40)
+		.attr('text-anchor', 'end')
+		.attr('class', 'label')
+		.text('x');
+
+
+
+
+	var legend = svg.selectAll('legend')
+		.data(color.domain())
+		.enter()
+		.append('g')
+			.attr('class', 'legend')
+			.attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
+
+	legend.append('rect')
+		.attr('x', width)
+		.attr('width', 15)
+		.attr('height', 15)
+		.style('fill', color);
+
+	// add text to the legend elements.
+	// rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
+	legend.append('text')
+		.attr('x', width - 6)
+		.attr('y', 8)
+		.attr('dy', '.35em')
+		.style('text-anchor', 'end')
+		.text(function(d){ return d; });
+
+
+
+d3.csv("data/ScatterplotData2.csv", function(error, data){
+	data.forEach(function(d){
+		 d.x = +d.x;
+		 d.y = +d.y;
+	});
+
+
+	var bubble = svg.selectAll('.bubble')
+		.data(data)
+		.enter().append('circle')
+		.attr('class', 'bubble')
+		.attr('cx', function(d){return x(d.x);})
+		.attr('cy', function(d){ return y(d.y); })
+		.attr('r', 3)
+		.style('stroke', function(d){ return color(d.class); })
+		.style('fill', 'none');
+
+
+
+  var numClicks = 0
+  realCentroid = function(){
+        if(numClicks == 0){svg.append("circle")
+        .attr("class", "realCentroid")
+        .attr("r", 8)
+        .style("fill", '#ffe820')
+        .style("stroke",'grey')
+        .style("stroke-width", 1)
+        .style('opacity', 1)
+        .attr("cx", width)
+        .attr("cy", height)
+        .transition()
+        .duration(2500)
+        .attr("cx", x(getClassCentroid(main.class, data).xAvg))
+        .attr("cy", y(getClassCentroid(main.class, data).yAvg))
+
+        numClicks = numClicks + 1
+      }
+
+    }
+		/* CENTROID LOCATOR */
+
+	// grabbing the centroid coordinates
+	centroid = getClassCentroid(main.class, data)
+	main.xAvg = centroid.xAvg
+	main.yAvg = centroid.yAvg
+
+  svg.on("mousedown", mousedown)
+     .on("mouseup", mouseup);
+    var circle_on = false;
+    var circle;
+    var cx, cy;
+    var attempt = 1
+
+
+
+  function mousedown() {
+    if(circle_on){
+      svg.selectAll("circle.centroid").remove();
+    }
+    if(main.clicks == 0){
+      main.startTime = Date.now()
+    }
+
+    var m = d3.mouse(this);
+    circle = svg.append("circle")
+      .attr("class", "centroid")
+        .attr("cx", m[0])
+        .attr("cy", m[1])
+        .attr("r", 8)
+        .style("fill", 'grey')
+				.style("stroke",'black')
+				.style("stroke-width", 1)
+        .style('opacity', .7);
+
+      cx = m[0]
+      cy = m[1]
+
+      circle_on = true;
+      svg.on("mousemove", mousemove);
+  }
+
+  function mousemove() {
+    var m = d3.mouse(this);
+
+    circle.attr("cx", m[0])
+        .attr("cy", m[1]);
+
+      cx = m[0]
+      cy = m[1]
+
+  }
+
+  function mouseup() {
+      svg.on("mousemove", null);
+      cx = x.invert(cx)
+      cy = y.invert(cy)
+
+			main.valid = isValidCoor(cx, cy)
+      main.endTime = Date.now()
+      main.xCor = cx
+      main.yCor = cy
+      main.clicks += 1
+      main.xErr = Math.sqrt(Math.pow(main.xCor - main.xAvg, 2))
+      main.yErr = Math.sqrt(Math.pow(main.yCor - main.yAvg, 2))
+      main.xPErr = main.xErr / main.xAvg
+      main.yPErr = main.yErr / main.yAvg
+
+			if(main.valid){
+        document.getElementById('warning').innerHTML = "";
+        experimentr.release();
+      } else {
+        document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is on the plot.";
+        experimentr.hold();
+      }
+    }
+  })
+
+
+  (function() {
+
+		experimentr.startTimer("task1_intro");
+		experimentr.onNext(function() {
+			experimentr.endTimer("task1_intro");
+		});
+
+	}());
+
+</script>

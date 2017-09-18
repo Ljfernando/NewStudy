@@ -1,0 +1,21 @@
+.label{
+  font-size: 15px;
+}
+
+.legend text,
+.axis text {
+  font-size: 13px;
+  fill: #333;
+  /*Making axis text unselectable*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+.legend rect{
+  fill-opacity: 0.75;
+}
+
+line.bestFitLine {
+    stroke: steelblue;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}

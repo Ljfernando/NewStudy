@@ -1,0 +1,204 @@
+<link rel="stylesheet" type="text/css" href="../toolCSS/baseRStyle.css" />
+
+<div id="section2-intro">
+
+<h3>Task 2 Training</h3>
+<p>
+  The next section will ask you to perform the following task: locate the densest region of the scatterplot.
+</p>
+<p>
+  The densest region is defined as the area of the scatterplot where most points lie. The bounding box will be provided and you must drag that box to the denset region.
+<p class="center">
+  <strong>Below is an example of what you will be doing. Click the text to view animation.</strong>
+</p>
+</div>
+<div id="plot">
+</div>
+<script>
+
+//Removes the text select cursor maintains regular cursor during mouse activity
+document.getElementById( "plot" ).onmousedown = function(event){
+    event.preventDefault();
+};
+var margin = {top: 50, right: 50, bottom: 50, left:50};
+var width = 600 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
+
+
+//Change this for other tools
+var classColors = ["black", "#FF0000", "#33cc33" , "#0000FF"]
+
+
+//Change for other tools
+xRange = [1.5, 5, 0.5];
+yRange = [1.5, 5, 0.5];
+
+xDom = [1.25, 5];
+yDom = [1.25, 5];
+
+
+var svg = d3.select('#plot')
+  .append('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom)
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+  // .on("mousedown", mousedown)
+  // .on("mouseup", mouseup);
+
+var x = d3.scaleLinear()
+  .range([margin.left, width]);
+
+var y = d3.scaleLinear()
+  .range([height, margin.left]);
+
+//hardcoding domain
+x.domain(xDom);
+y.domain(yDom);
+
+
+  // Upper Horizontal Line
+svg.append('line')
+  .attr('class', 'border')
+  .attr('x1', margin.left)
+  .attr('x2', width)
+  .attr('y1', margin.top)
+  .attr('y2', margin.top)
+
+
+//Right verticle Line
+svg.append('line')
+  .attr('class', 'border')
+  .attr('x1', width)
+  .attr('x2', width)
+  .attr('y1', margin.top)
+  .attr('y2', height)
+
+
+var xAxis = d3.axisBottom()
+  .scale(x)
+  .tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
+  .tickFormat(d3.format(".1f"))
+  .tickSizeOuter(0);
+
+var yAxis = d3.axisLeft()
+  .scale(y)
+  .tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
+  .tickFormat(d3.format(".1f"))
+  .tickSizeOuter(0);
+
+
+// again scaleOrdinal
+var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
+.range(classColors);;
+
+d3.csv('../../data/ScatterplotData2.csv', function(error, data){
+  data.forEach(function(d){
+     d.x = +d.x;
+     d.y = +d.y;
+  });
+
+  svg.append('g')
+    .attr('transform', 'translate(0,' + height+ ')')
+    .attr('class', 'x axis')
+    .call(xAxis);
+
+  svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ',0)')
+    .attr('class', 'y axis')
+    .call(yAxis);
+
+
+  var bubble = svg.selectAll('.bubble')
+    .data(data)
+    .enter().append('circle')
+    .attr('class', 'bubble')
+    .attr('cx', function(d){return x(d.x);})
+    .attr('cy', function(d){ return y(d.y); })
+    .attr('r', 3)
+    .style('stroke', function(d){ return color(d.class); })
+    .style('fill', 'none');
+
+  svg.append('text')
+    .attr('x', 5)
+    .attr('y', height/2)
+    .attr('class', 'label')
+    .text('y');
+
+
+  svg.append('text')
+    .attr('x', width/2)
+    .attr('y', height + 40)
+    .attr('text-anchor', 'end')
+    .attr('class', 'label')
+    .text('x');
+
+  var legend = svg.selectAll('legend')
+    .data(color.domain())
+    .enter()
+    .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
+
+  legend.append('rect')
+    .attr('x', width)
+    .attr('width', 15)
+    .attr('height', 15)
+    .style('fill', color);
+
+  // add text to the legend elements.
+  // rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
+  legend.append('text')
+    .attr('x', width - 6)
+    .attr('y', 8)
+    .attr('dy', '.35em')
+    .style('text-anchor', 'end')
+    .text(function(d){ return d; });
+
+  var animation = svg.append('g')
+    .append('text')
+    .attr('x', width/2)
+    .attr('y', margin.top+ 20)
+    .text('Click Here To View Animation')
+    .attr("text-anchor", "middle")
+
+  var square = svg.append("rect")
+              .attr("class", "square")
+              .attr("width", 50)
+              .attr("height", 50)
+              .attr("x", width)
+              .attr("y", height)
+              .attr("stroke", "black")
+              .attr("fill", "none");
+
+
+  animation.on('click', loopTransition)
+
+
+  function loopTransition(){
+    square
+      .transition().duration(2000)
+      .attr("x", x(xRange[0] + 1))
+      .attr("y", y(yRange[1] - 1))
+      .transition().duration(2000)
+      .attr("x", x(xRange[1] - 1))
+      .attr("y", y(yRange[1] - 1))
+      .transition().duration(2000)
+      .attr("x", x(xRange[0] + 1))
+      .attr("y", y(yRange[0] + 1))
+      .transition().duration(2000)
+      .attr("x", x(xRange[1] - 1))
+      .attr("y", y(yRange[0] + 1))
+  }
+});
+
+</script>
+
+<script>
+	(function() {
+		experimentr.startTimer('task2-intro');
+		experimentr.release();
+		experimentr.onNext(function() {
+			experimentr.endTimer('task2-intro');
+		});
+	}());
+</script>

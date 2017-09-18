@@ -1,0 +1,32 @@
+.axis path,
+.axis line{
+  stroke-width: 1.5px;
+  stroke: #d2d2d2;
+}
+
+.exlMajorGrid line {
+  stroke: #d2d2d2;
+  stroke-width: 1px;
+}
+
+.exlMajorGrid path {
+  stroke-width: 0;
+}
+
+/*for the left and right frame*/
+/*Major gridlines already make top and bottom frame*/
+line.border{
+  fill: none;
+  stroke-width: 1px;
+  stroke: #d2d2d2;
+
+}
+
+
+
+rect.frameBorder{
+  stroke: #d2d2d2;
+  stroke-width: 1px;
+  fill: none;
+
+}

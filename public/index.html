@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<title>Survey</title>
+
+<!-- Calls to /scripts are redirected to /node_modules/ on the server -->
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="experimentr.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<script language="javascript" type="text/javascript" src="toolTemplates/excelTemplate.js"></script>
+<script language="javascript" type="text/javascript" src="toolTemplates/baseRTemplate.js"></script>
+<script language="javascript" type="text/javascript" src="toolTemplates/ggplotTemplate.js"></script>
+<script language="javascript" type="text/javascript" src="toolTemplates/matplotlibTemplate.js"></script>
+<script language="javascript" type="text/javascript" src="toolTemplates/tableauTemplate.js"></script>
+
+<script language="javascript" type="text/javascript" src = "data/allData.js"></script>
+
+<body></body>
+
+<script>
+/*
+ * Compute a random integer i within a given range,
+ * where lower <= i < upper
+*/
+function getRandomInteger(lower, upper) {
+	console.assert(arguments.length === 2, "getRandomInteger() requires lower and upper parameters.");
+	return Math.floor(Math.random() * (upper - lower)) + lower;
+}
+/*
+ * Put all modules involved in experiment between initial consent module and
+ * ending debrief module.
+ */
+
+/*
+ * Generating two arrays that will be randomized to decide
+ * which tools use which dataset
+ */
+var allTools = ["baseR", "exl", "ggp", "mpl", "tbl"]
+var datasetNums = [1, 2, 3, 4, 5]
+
+// Randomizes the arrays above
+function randomizeArray(array){
+	for (var i = 0; i < array.length; i++) {
+		randomIndex = getRandomInteger(i, array.length);
+		var temp = array[i];
+		array[i] = array[randomIndex];
+		array[randomIndex] = temp;
+	}
+	newArray = array;
+	return newArray
+}
+
+allTools = randomizeArray(allTools)
+datasetNums = randomizeArray(datasetNums)
+console.log("randomize tools", allTools)
+console.log("randomize nums", datasetNums)
+
+var modules = [
+  // 'modules/splom_consent/',
+  'modules/aes_demographics/',
+  'modules/aes_familiarity/',
+	'modules/aes_pref1',
+	'modules/aes_task1_intro',
+	'modules/aes_task1/easy_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task1/easy_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task1/easy_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task1/easy_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task1/easy_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task1/easy_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task1/easy_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task1/easy_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task1/easy_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task1/easy_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task1/hard_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task1/hard_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task1/hard_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task1/hard_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task1/hard_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task1/hard_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task1/hard_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task1/hard_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task1/hard_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task1/hard_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_pref2',
+
+	// 'modules/aes_task2_intro',
+	// 'modules/aes_task2',
+  //'modules/splom_comfort/',
+  // 'modules/section1-intro/',
+  // 'modules/section1-template/',
+  // 'modules/section2-template/',
+  'modules/debrief/'
+];
+
+// Randomize order of test modules, keeping consent as first and debrief as last
+var numModules = modules.length;
+var randomIndex;
+for (var i = 4; i < numModules - 2; i++) {
+	randomIndex = getRandomInteger(i, numModules - 2);
+	var temp = modules[i];
+	modules[i] = modules[randomIndex];
+	modules[randomIndex] = temp;
+}
+
+console.log("randomized modules", modules)
+// Add randomized module order to session tracking;
+var storeInfo = {};
+storeInfo['module_order'] = modules.join().replace(/modules\//g,"");
+experimentr.addData(storeInfo);
+
+experimentr.sequence(modules).start();
+
+</script>

@@ -1,0 +1,13 @@
+.axis path,
+.axis line{
+  fill: none;
+  stroke-width: 1px;
+  stroke: #777;
+}
+
+line.border{
+  fill: none;
+  stroke-width: 1px;
+  stroke: #777;
+
+}

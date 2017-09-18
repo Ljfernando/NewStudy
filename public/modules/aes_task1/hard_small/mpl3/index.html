@@ -1,0 +1,72 @@
+<!-- style sheet for every plot (allows for axes labels to be unclickable) -->
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" type="text/css" href="toolCSS/matplotlibStyle.css" />
+<script language="javascript" type="text/javascript" src="../../../toolTemplates/matplotlibTemplate.js"></script>
+<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
+
+<!-- this line removes any default padding and style. you might only need one of these values set. -->
+<style> body {padding: 0; margin: 0;} </style>
+<h3>Task 1</h3>
+<p>
+	<strong>Click anywhere to activate the grey circle. Then drag to indicated area.</strong>
+</p>
+<div id="section1-template">
+	<div id="question"></div>
+	<div id="help"></div>
+	<div id="plot"></div>
+	<div id="warning"></div>
+</div>
+
+<script>
+
+	//Removes the text select cursor maintains regular cursor during mouse activity
+	document.getElementById( "plot" ).onmousedown = function(event){
+	    event.preventDefault();
+	};
+
+	experimentr.hold();
+
+	taskResponse = {};
+
+
+	(function(){
+		dataObj = allData["hs3"]
+		tag = "t1a";
+		taskNum = 1;
+
+
+		taskResponse = mplPlot(taskNum, dataObj.file, dataObj.mpl.xRange, dataObj.mpl.yRange, dataObj.mpl.xDom, dataObj.mpl.yDom, dataObj.mpl.xFormat, dataObj.mpl.yFormat);
+
+		taskResponse.createBaseLayer();
+		taskResponse.createLegend();
+		taskResponse.plotData();
+
+		var storeInfo = {};
+
+		var question = "Click and drag the grey circle to the centroid of class " + taskResponse.class
+
+		document.getElementById("question").innerHTML = question
+	})
+
+	(function() {
+
+		experimentr.startTimer("aes_task1");
+		experimentr.onNext(function() {
+			experimentr.endTimer("aes_task1");
+
+      //updating info
+      storeInfo[tag+"_clicks"] = taskResponse.clicks;
+      storeInfo[tag+"_startTime"] = taskResponse.startTime;
+      storeInfo[tag+"_endTime"] = taskResponse.endTime;
+      storeInfo[tag+"_timeDiff"] = taskResponse.endTime - taskResponse.startTime;
+      storeInfo[tag+"_class"] = taskResponse.class;
+      storeInfo[tag+"_xPErr"] = taskResponse.xPErr;
+      storeInfo[tag+"_yPErr"] = taskResponse.yPErr;
+
+			console.log("info", storeInfo);	//TODO remove debugging
+			experimentr.addData(storeInfo);
+		});
+
+	}());
+
+</script>
