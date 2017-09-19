@@ -57,7 +57,7 @@ console.log("randomize tools", allTools)
 console.log("randomize nums", datasetNums)
 
 var modules = [
-  // 'modules/splom_consent/',
+  'modules/aes_consent/',
   'modules/aes_demographics/',
   'modules/aes_familiarity/',
 	'modules/aes_pref1',
@@ -96,7 +96,7 @@ var modules = [
 // Randomize order of test modules, keeping consent as first and debrief as last
 var numModules = modules.length;
 var randomIndex;
-for (var i = 4; i < numModules - 2; i++) {
+for (var i = 5; i < numModules - 2; i++) {
 	randomIndex = getRandomInteger(i, numModules - 2);
 	var temp = modules[i];
 	modules[i] = modules[randomIndex];

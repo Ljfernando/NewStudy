@@ -154,16 +154,17 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 				.attr('class', 'legend')
 				.attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
 
-		legend.append('rect')
-			.attr('x', width)
-			.attr('width', 15)
-			.attr('height', 15)
-			.style('fill', color);
+		legend.append('circle')
+			.attr('cx', width - 10)
+			.attr('cy', 8)
+			.attr('r', 3)
+			.style('stroke', color)
+			.style('fill', 'none')
 
 		// add text to the legend elements.
 		// rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
 		legend.append('text')
-			.attr('x', width - 6)
+			.attr('x', width + 10)
 			.attr('y', 8)
 			.attr('dy', '.35em')
 			.style('text-anchor', 'end')

@@ -31,7 +31,7 @@
 
 	(function(){
 		dataObj = allData["hl3"]
-		tag = "t1a";
+		tag = "hl3";
 		taskNum = 1;
 
 
@@ -56,6 +56,9 @@
 			experimentr.endTimer("aes_task1");
 
       //updating info
+			storeInfo[tag+"_tool"] = "exl"
+			storeInfo[tag+"_xCor"] = taskResponse.xCor;
+			storeInfo[tag+"_yCor"] = taskResponse.yCor;
       storeInfo[tag+"_clicks"] = taskResponse.clicks;
       storeInfo[tag+"_startTime"] = taskResponse.startTime;
       storeInfo[tag+"_endTime"] = taskResponse.endTime;

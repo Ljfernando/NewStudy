@@ -37,30 +37,55 @@ tr:nth-child(even) {
   </p>
 </div>
 <br>
-<div id="comfort">Please rate your comfort level with <strong>multi-class scatterplots</strong> on a scale of 1 to 7, with 1 indicating you are a novice and very uncomfortable interpreting scatterplot matrices and 7 indicating you are an expert and very comfortable interpreting scatterplot matrices.
-    <div class="indentList" id="comfort"><br>
-        <input type="radio" id="d1" name="comfort" value="1"> 1 Very Uncomfortable<br>
-        <input type="radio" id="d2" name="comfort" value="2"> 2 Uncomfortable<br>
-        <input type="radio" id="d3" name="comfort" value="3"> 3 Somewhat Uncomfortable<br>
-        <input type="radio" id="d4" name="comfort" value="4"> 4 Neutral<br>
-        <input type="radio" id="d5" name="comfort" value="5"> 5 Somewhat Comfortable<br>
-        <input type="radio" id="d6" name="comfort" value="6"> 6 Comfortable<br>
-        <input type="radio" id="d7" name="comfort" value="7"> 7 Very Comfortable<br>
+<div id="comfort">Please indicate your comfort level with <strong>multi-class scatterplots</strong> by choosing the appropriate option below. Comfort levels are ordered from left to right by least comfortable to most comfortable.
+    <div id="comfort"><br>
+      <table>
+        <tr>
+          <th>Very Uncomfortable</th>
+          <th>Uncomfortable</th>
+          <th>Somewhat Uncomfortable</th>
+          <th>Neutral</th>
+          <th>Somewhat Comfortable</th>
+          <th>Comfortable</th>
+          <th>Very Comfortable</th>
+        </tr>
+        <tr>
+          <td><input type="radio" id="d1" name="comfort" value="1"></td>
+          <td><input type="radio" id="d2" name="comfort" value="2"></td>
+          <td><input type="radio" id="d3" name="comfort" value="3"></td>
+          <td><input type="radio" id="d4" name="comfort" value="4"></td>
+          <td><input type="radio" id="d5" name="comfort" value="5"></td>
+          <td><input type="radio" id="d6" name="comfort" value="6"></td>
+          <td><input type="radio" id="d7" name="comfort" value="7"></td>
+        </tr>
+      </table>
     </div>
 </div>
-<br>
+<br><br>
 <div id="usage">Please indicate how often you use scatterplots in your daily job.
-    <div class="indentList" id="usage"><br>
-        <input type="radio" id="d1" name="usage" value="Never"> Never<br>
-        <input type="radio" id="d2" name="usage" value="Year"> Once a year<br>
-        <input type="radio" id="d3" name="usage" value="Month"> Once a month<br>
-        <input type="radio" id="d4" name="usage" value="Week"> Once a week<br>
-        <input type="radio" id="d5" name="usage" value="Daily"> Daily<br>
+    <div id="usage"><br>
+      <table>
+        <tr>
+          <th>Never</th>
+          <th>Once a year</th>
+          <th>Once a month</th>
+          <th>Once a week</th>
+          <th>Daily</th>
+        </tr>
+        <tr>
+          <td><input type="radio" id="d1" name="usage" value="Never"></td>
+          <td><input type="radio" id="d2" name="usage" value="Year"></td>
+          <td><input type="radio" id="d3" name="usage" value="Month"></td>
+          <td><input type="radio" id="d4" name="usage" value="Week"></td>
+          <td><input type="radio" id="d5" name="usage" value="Daily"></td>
+        </tr>
+      </table>
+
     </div>
 </div>
 
 
-<br>
+<br><br>
 <div id="tools"> Below is a list of tools that are used to visualize data. Please indicate your familiarity with each tool.<br>
     <br>
     <table>

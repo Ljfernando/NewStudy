@@ -31,7 +31,7 @@
 
 	(function(){
 		dataObj = allData["es1"]
-		tag = "t1a";
+		tag = "es1";
 		taskNum = 1;
 
 		taskResponse = ggpPlot(taskNum, dataObj.file, dataObj.ggp.xRange, dataObj.ggp.yRange, dataObj.ggp.xDom, dataObj.ggp.yDom, dataObj.ggp.xFormat, dataObj.ggp.yFormat);
@@ -54,6 +54,9 @@
 			experimentr.endTimer("aes_task1");
 
       //updating info
+			storeInfo[tag+"_tool"] = "ggp"
+			storeInfo[tag+"_xCor"] = taskResponse.xCor;
+			storeInfo[tag+"_yCor"] = taskResponse.yCor;
       storeInfo[tag+"_clicks"] = taskResponse.clicks;
       storeInfo[tag+"_startTime"] = taskResponse.startTime;
       storeInfo[tag+"_endTime"] = taskResponse.endTime;

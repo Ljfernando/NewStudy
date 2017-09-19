@@ -30,7 +30,7 @@
 
 	(function(){
 		dataObj = allData["hs4"]
-		tag = "t1a";
+		tag = "hs4";
 		taskNum = 1;
 
 		taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat);
@@ -53,6 +53,9 @@
 			experimentr.endTimer("aes_task1");
 
       //updating info
+			storeInfo[tag+"_tool"] = "baseR"
+			storeInfo[tag+"_xCor"] = taskResponse.xCor;
+			storeInfo[tag+"_yCor"] = taskResponse.yCor;
       storeInfo[tag+"_clicks"] = taskResponse.clicks;
       storeInfo[tag+"_startTime"] = taskResponse.startTime;
       storeInfo[tag+"_endTime"] = taskResponse.endTime;
