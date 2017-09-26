@@ -11,6 +11,11 @@ body {
   width: 960px;
 }
 
+h3{
+  color: steelblue;
+  font-weight: bold;
+}
+
 span.blue {
   color: #80b1d3;
 }

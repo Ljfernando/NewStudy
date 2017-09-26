@@ -143,6 +143,21 @@ function tblPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   		.attr('transform', 'translate(' + margin.left + ',0)')
   		.attr('class', 'y axis')
   		.call(yAxis);
+
+		svg.append('text')
+			.attr('x', 5)
+			.attr('y', height/2)
+			.attr('class', 'label')
+			.text('y');
+
+
+		svg.append('text')
+			.attr('x', width/2)
+			.attr('y', height + 40)
+			.attr('text-anchor', 'end')
+			.attr('class', 'label')
+			.text('x');
+
   }
 
   main.createLegend = function(){

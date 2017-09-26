@@ -52,6 +52,7 @@ var experimentr = (function() {
       .append('button')
         .attr('type', 'button')
         .attr('id', 'next-button')
+        .attr('class', 'pure-button pure-button-primary')
         .attr('disabled', true)
         .text('Next')
         .on('click', experimentr.next);
