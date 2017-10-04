@@ -58,11 +58,11 @@ console.log("randomize tools", allTools)
 console.log("randomize nums", datasetNums)
 
 var modules = [
-  'modules/aes_consent/',
-  'modules/aes_demographics/',
-  'modules/aes_familiarity/',
-	'modules/aes_pref1',
-	'modules/aes_task1_intro',
+  // 'modules/aes_consent/',
+  // 'modules/aes_demographics/',
+  // 'modules/aes_familiarity/',
+	// 'modules/aes_pref1',
+	// 'modules/aes_task1_intro',
 	'modules/aes_task1/easy_small/' + allTools[0] + datasetNums[0],
 	'modules/aes_task1/easy_small/' + allTools[1] + datasetNums[1],
 	'modules/aes_task1/easy_small/' + allTools[2] + datasetNums[2],
@@ -83,22 +83,65 @@ var modules = [
 	'modules/aes_task1/hard_large/' + allTools[2] + datasetNums[2],
 	'modules/aes_task1/hard_large/' + allTools[3] + datasetNums[3],
 	'modules/aes_task1/hard_large/' + allTools[4] + datasetNums[4],
-	'modules/aes_pref2',
 
-	// 'modules/aes_task2_intro',
-	// 'modules/aes_task2',
-  //'modules/splom_comfort/',
-  // 'modules/section1-intro/',
-  // 'modules/section1-template/',
-  // 'modules/section2-template/',
+	'modules/aes_task2_intro',
+	// 'modules/aes_task2/easy_small/' + allTools[0] + datasetNums[0],
+	// 'modules/aes_task2/easy_small/' + allTools[1] + datasetNums[1],
+	// 'modules/aes_task2/easy_small/' + allTools[2] + datasetNums[2],
+	// 'modules/aes_task2/easy_small/' + allTools[3] + datasetNums[3],
+	// 'modules/aes_task2/easy_small/' + allTools[4] + datasetNums[4],
+	// 'modules/aes_task2/easy_large/' + allTools[0] + datasetNums[0],
+	// 'modules/aes_task2/easy_large/' + allTools[1] + datasetNums[1],
+	// 'modules/aes_task2/easy_large/' + allTools[2] + datasetNums[2],
+	// 'modules/aes_task2/easy_large/' + allTools[3] + datasetNums[3],
+	// 'modules/aes_task2/easy_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task2/hard_small/' + allTools[0] + datasetNums[1],
+	'modules/aes_task2/hard_small/' + allTools[1] + datasetNums[2],
+	'modules/aes_task2/hard_small/' + allTools[2] + datasetNums[3],
+	'modules/aes_task2/hard_small/' + allTools[3] + datasetNums[4],
+	'modules/aes_task2/hard_small/' + allTools[4] + datasetNums[0],
+	'modules/aes_task2/hard_large/' + allTools[0] + datasetNums[1],
+	'modules/aes_task2/hard_large/' + allTools[1] + datasetNums[2],
+	'modules/aes_task2/hard_large/' + allTools[2] + datasetNums[3],
+	'modules/aes_task2/hard_large/' + allTools[3] + datasetNums[4],
+	'modules/aes_task2/hard_large/' + allTools[4] + datasetNums[0],
+
+	'modules/aes_task2/hard_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/hard_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/hard_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/hard_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/hard_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task2/hard_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/hard_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/hard_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/hard_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/hard_large/' + allTools[4] + datasetNums[4],
+
+	'modules/aes_pref2',
   'modules/debrief/'
 ];
 
-// Randomize order of test modules, keeping consent as first and debrief as last
+//Randomize order of test modules, keeping consent as first and debrief as last
 var numModules = modules.length;
+var task1start = 5 - 5;
+var task1end = 24 - 5;
+var task2start = task1end + 2 - 5
+var task2end = 45 - 5
+
 var randomIndex;
-for (var i = 5; i < numModules - 2; i++) {
-	randomIndex = getRandomInteger(i, numModules - 2);
+
+for (var i = task1start; i <= task1end; i++) {
+	randomIndex = getRandomInteger(i, task1end);
+	var temp = modules[i];
+	modules[i] = modules[randomIndex];
+	modules[randomIndex] = temp;
+}
+
+
+var randomIndex;
+
+for (var i = task2start; i <= task2end; i++) {
+	randomIndex = getRandomInteger(i, task2end);
 	var temp = modules[i];
 	modules[i] = modules[randomIndex];
 	modules[randomIndex] = temp;

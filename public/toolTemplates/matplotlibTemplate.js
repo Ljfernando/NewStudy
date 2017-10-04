@@ -172,8 +172,11 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		legend.append('circle')
       .attr('cx', width - 6)
       .attr('cy', 8)
-      .attr('r', 3)
-      .style('fill', color);
+      .attr('r', 4)
+      .style('fill', color)
+			.style('stroke', "black")
+			.style('stroke-width', .4)
+;
 
     // add text to the legend elements.
     // rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
@@ -273,8 +276,8 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
             main.clicks += 1
             main.xErr = Math.sqrt(Math.pow(main.xCor - main.xAvg, 2))
             main.yErr = Math.sqrt(Math.pow(main.yCor - main.yAvg, 2))
-            main.xPErr = main.xErr / main.xAvg
-            main.yPErr = main.yErr / main.yAvg
+            main.xPErr = Math.abs(main.xErr / main.xAvg)
+            main.yPErr = Math.abs(main.yErr / main.yAvg)
 
 						if(main.valid){
 							document.getElementById('warning').innerHTML = "";

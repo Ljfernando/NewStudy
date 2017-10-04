@@ -9,10 +9,13 @@
 <p>
   The densest region is defined as the area of the scatterplot where most points lie. The bounding box will be provided and you must drag that box to the denset region.
 <p class="center">
-  <strong>Below is an example of what you will be doing. Click the text to view animation.</strong>
+  <strong>Below is an example of what you will be doing. Click the plot to activate the box.</strong>
 </p>
 </div>
 <div id="plot">
+
+<div id="warning"></div>
+
 </div>
 <script>
 
@@ -36,6 +39,12 @@ yRange = [1.5, 5, 0.5];
 xDom = [1.25, 5];
 yDom = [1.25, 5];
 
+
+var main = {"clicks" : 0,
+            "startTime":null,
+            "endTime":null,
+            "dataFile": '../../data/ScatterplotData2.csv',
+          }
 
 var svg = d3.select('#plot')
   .append('svg')
@@ -91,7 +100,7 @@ var yAxis = d3.axisLeft()
 var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
 .range(classColors);;
 
-d3.csv('../../data/ScatterplotData2.csv', function(error, data){
+d3.csv(main.dataFile, function(error, data){
   data.forEach(function(d){
      d.x = +d.x;
      d.y = +d.y;
@@ -154,41 +163,134 @@ d3.csv('../../data/ScatterplotData2.csv', function(error, data){
     .style('text-anchor', 'end')
     .text(function(d){ return d; });
 
-  var animation = svg.append('g')
-    .append('text')
-    .attr('x', width/2)
-    .attr('y', margin.top+ 20)
-    .text('Click Here To View Animation')
-    .attr("text-anchor", "middle")
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', 40)
+    .style('text-anchor', 'middle')
+    .text('Density of your bounding box: ');
 
-  var square = svg.append("rect")
-              .attr("class", "square")
-              .attr("width", 50)
-              .attr("height", 50)
-              .attr("x", width)
-              .attr("y", height)
-              .attr("stroke", "black")
-              .attr("fill", "none");
+  var densityText = svg.append('text')
+    .attr('x', (width/2) + 120)
+    .attr('y', 40)
+    .style('text-anchor', 'start')
+    .text('0')
+
+  svg.on("mousedown", mousedown)
+     .on("mouseup", mouseup);
+
+    //XY placement of mouse (center of box coordinates)
+    var xUser;
+    var yUser;
+    //boolean used to indicate whether a square has been created
+    var square_on = false;
+
+    //Creating the local square variable to be accessed by other mouse functions
+    var square;
+
+    //Creatin object that will hold coordinates of density box. tR -> top right, bL -> bottom left...
+    var denseBoundaries = {
+      "tR" : {"x":0, "y":0},
+      "bR" : {"x":0, "y":0},
+      "bL" : {"x":0, "y":0},
+      "tL" : {"x":0, "y":0}
+    }
+
+    //Updates denseBoundaries object by inverting the pixelated values to the data domain
+    function updateBoundaries(xCoor, yCoor){
+      denseBoundaries.tR.x = x.invert(xCoor + 25)
+      denseBoundaries.tR.y = y.invert(yCoor - 25)
+
+      denseBoundaries.bR.x = x.invert(xCoor + 25)
+      denseBoundaries.bR.y = y.invert(yCoor + 25)
+
+      denseBoundaries.bL.x = x.invert(xCoor - 25)
+      denseBoundaries.bL.y = y.invert(yCoor + 25)
+
+      denseBoundaries.tL.x = x.invert(xCoor - 25)
+      denseBoundaries.tL.y = y.invert(yCoor - 25)
+    }
+
+    //Computes the number of points within a given boundary box
+    function getDensity(xMax, xMin, yMax, yMin){
+
+      var newData = data.filter(function(d){
+        return d.x < xMax && d.x > xMin && d.y < yMax && d.y > yMin
+      })
+
+      return newData.length;
+    }
+
+    function mousedown() {
+      if(square_on){
+        svg.selectAll("rect.square").remove();
+      }
+
+      if(main.clicks == 0){
+        main.startTime = Date.now()
+      }
+
+      var m = d3.mouse(this);
+      square = svg.append("rect")
+        .attr("class", "square")
+        .attr("width", 50)
+        .attr("height", 50)
+        .attr("x", m[0] - 25)
+        .attr("y", m[1] - 25)
+        .attr("stroke", 'black')
+        .attr("fill", "none");
 
 
-  animation.on('click', loopTransition)
+      xUser = x.invert(m[0]);
+      yUser = y.invert(m[1]);
+      updateBoundaries(m[0], m[1]);
+
+      square_on = true;
+      svg.on("mousemove", mousemove);
+    }
 
 
-  function loopTransition(){
-    square
-      .transition().duration(2000)
-      .attr("x", x(xRange[0] + 1))
-      .attr("y", y(yRange[1] - 1))
-      .transition().duration(2000)
-      .attr("x", x(xRange[1] - 1))
-      .attr("y", y(yRange[1] - 1))
-      .transition().duration(2000)
-      .attr("x", x(xRange[0] + 1))
-      .attr("y", y(yRange[0] + 1))
-      .transition().duration(2000)
-      .attr("x", x(xRange[1] - 1))
-      .attr("y", y(yRange[0] + 1))
-  }
+
+    function mousemove() {
+      var m = d3.mouse(this);
+
+      square.attr("x", m[0] - 25)
+            .attr("y", m[1] - 25);
+
+      xUser = x.invert(m[0]);
+      yUser = y.invert(m[1]);
+
+      updateBoundaries(m[0], m[1]);
+
+      var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
+      densityText.text(density)
+
+    }
+
+    function mouseup() {
+        svg.on("mousemove", null);
+
+        var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
+        densityText.text(density)
+
+        main.valid = function(){return isValidCoor(xUser, yUser)}
+        main.endTime = Date.now();
+        main.timeDiff = main.endTime - main.startTime
+        main.clicks += 1;
+        main.density = density;
+        main.xMax = denseBoundaries.tR.x;
+        main.xMin = denseBoundaries.tL.x;
+        main.yMax = denseBoundaries.tR.y;
+        main.yMin = denseBoundaries.bR.y;
+
+        if(main.valid){
+          document.getElementById('warning').innerHTML = "";
+          experimentr.release();
+        } else {
+          document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
+          experimentr.hold();
+        }
+    }
+
 });
 
 </script>

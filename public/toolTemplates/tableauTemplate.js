@@ -268,8 +268,8 @@ function tblPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
             main.clicks += 1
             main.xErr = Math.sqrt(Math.pow(main.xCor - main.xAvg, 2))
             main.yErr = Math.sqrt(Math.pow(main.yCor - main.yAvg, 2))
-            main.xPErr = main.xErr / main.xAvg
-            main.yPErr = main.yErr / main.yAvg
+            main.xPErr = Math.abs(main.xErr / main.xAvg)
+            main.yPErr = Math.abs(main.yErr / main.yAvg)
 
 						if(main.valid){
 							document.getElementById('warning').innerHTML = "";

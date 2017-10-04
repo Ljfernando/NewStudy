@@ -202,7 +202,7 @@ function ggpPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		legend.append('circle')
 			.attr('cx', width - 8.5)
 			.attr('cy', 8)
-			.attr('r', 3)
+			.attr('r', 4)
 			.style('fill', color)
 
   	// add text to the legend elements.
@@ -302,8 +302,8 @@ function ggpPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		          main.clicks += 1
 		          main.xErr = Math.sqrt(Math.pow(main.xCor - main.xAvg, 2))
 		          main.yErr = Math.sqrt(Math.pow(main.yCor - main.yAvg, 2))
-		          main.xPErr = main.xErr / main.xAvg
-		          main.yPErr = main.yErr / main.yAvg
+		          main.xPErr = Math.abs(main.xErr / main.xAvg)
+		          main.yPErr = Math.abs(main.yErr / main.yAvg)
 
 							if(main.valid){
 								document.getElementById('warning').innerHTML = "";
