@@ -388,6 +388,35 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 		    /* LINE OF BEST FIT */
 		    else{
+
+					function calculateDistance(a, b, c, x, y){
+						var numerator = Math.abs((a*x) + (b*y) + c)
+						var denominator = Math.sqrt((a*a) + (b*b))
+
+						return numerator/denominator
+					}
+
+					function getMeanDistance(a, b, c){
+
+						var newData = data.filter(function(d){
+							return d.class == main.class
+						})
+
+
+						var dataLength = newData.length
+						var totalDist = 0
+
+						newData.forEach(function(each){
+							each.dist = calculateDistance(a, b, c, each.x, each.y)
+							totalDist += each.dist
+						})
+
+						console.log(newData)
+
+						return totalDist/dataLength
+					}
+
+
 		      svg.on("mousedown", mousedown)
 		         .on("mouseup", mouseup)
 		      var line_on = false;
@@ -424,25 +453,28 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 		      function mouseup() {
 		          svg.on("mousemove", null);
-		          console.log(line)
-		          console.log('x1', x1)
-		          console.log('x2', x2)
-		          console.log('y1', y1)
-		          console.log('y2', y2)
-		          console.log('converted')
+		          // console.log(line)
+		          // console.log('x1', x1)
+		          // console.log('x2', x2)
+		          // console.log('y1', y1)
+		          // console.log('y2', y2)
+		          // console.log('converted')
 		          x1 = x.invert(x1)
 		          x2 = x.invert(x2)
 		          y1 = y.invert(y1)
 		          y2 = y.invert(y2)
-		          console.log('x1', x1)
-		          console.log('x2', x2)
-		          console.log('y1', y1)
-		          console.log('y2', y2)
+		          // console.log('x1', x1)
+		          // console.log('x2', x2)
+		          // console.log('y1', y1)
+		          // console.log('y2', y2)
 
-		          var slope = (y2 - y1) / (x2 - x1)
-		          console.log('slope', slope)
-		          var yInt = y1 - (slope* x1)
-		          console.log('y intercept', yInt)
+		          var a = (y2 - y1) / (x2 - x1)
+		          console.log('a', a)
+		          var c = y1 - (a* x1)
+		          console.log('c', c)
+							avgDist = getMeanDistance(a, 1, c);
+							console.log("avg dist:", avgDist);
+
 		      }
 		    }
 		  });
