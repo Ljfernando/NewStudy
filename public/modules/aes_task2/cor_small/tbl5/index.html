@@ -1,0 +1,74 @@
+<!-- style sheet for every plot (allows for axes labels to be unclickable) -->
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" type="text/css" href="toolCSS/tableauStyle.css" />
+<script language="javascript" type="text/javascript" src="../../../toolTemplates/tableauTemplate.js"></script>
+<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
+
+<!-- this line removes any default padding and style. you might only need one of these values set. -->
+<style> body {padding: 0; margin: 0;} </style>
+<h3>Task 2</h3>
+<p>
+	<strong>Click anywhere to activate the bounding box. Then drag to densest region.</strong>
+</p>
+<div id="section2-template">
+	<div id="question"></div>
+	<div id="help"></div>
+	<div id="plot"></div>
+	<div id="warning"></div>
+</div>
+
+<script>
+
+	//Removes the text select cursor maintains regular cursor during mouse activity
+	document.getElementById( "plot" ).onmousedown = function(event){
+	    event.preventDefault();
+	};
+
+	taskResponse = {};
+
+
+	experimentr.hold();
+	(function(){
+		dataObj = allData["cor_hs5"]
+		tag = "t2cor_hs5";
+		taskNum = 2;
+
+
+		taskResponse = tblPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.tbl.yRange, dataObj.tbl.xDom, dataObj.tbl.yDom, dataObj.tbl.xFormat, dataObj.tbl.yFormat);
+
+		taskResponse.createBaseLayer();
+		taskResponse.createLegend();
+		taskResponse.plotData();
+
+		var storeInfo = {};
+
+		var question = "Click and drag the bounding box to the densest region of class " + taskResponse.class
+
+		document.getElementById("question").innerHTML = question
+	})
+
+	(function() {
+
+		experimentr.startTimer("aes_task2");
+		experimentr.onNext(function() {
+			experimentr.endTimer("aes_task2");
+
+      //updating info
+			storeInfo[tag+"_tool"] = "tbl"
+      storeInfo[tag+"_clicks"] = taskResponse.clicks;
+      storeInfo[tag+"_startTime"] = taskResponse.startTime;
+      storeInfo[tag+"_endTime"] = taskResponse.endTime;
+      storeInfo[tag+"_timeDiff"] = taskResponse.endTime - taskResponse.startTime;
+      storeInfo[tag+"_density"] = taskResponse.density;
+      storeInfo[tag+"_xMax"] = taskResponse.xMax;
+      storeInfo[tag+"_xMin"] = taskResponse.xMin;
+      storeInfo[tag+"_yMax"] = taskResponse.yMax;
+      storeInfo[tag+"_yMin"] = taskResponse.yMin;
+
+			console.log("info", storeInfo);	//TODO remove debugging
+			experimentr.addData(storeInfo);
+		});
+
+	}());
+
+</script>

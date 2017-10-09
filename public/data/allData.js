@@ -2,7 +2,7 @@ allData = {
 
 	"es1" : {
 
-		"file" : "NewData/clusters/easy_small_1.csv",
+		"file" : "data/clusters/easy_small_1.csv",
 
 		"ggp" : {
 			"xRange" : [-3, 1, 1],
@@ -52,7 +52,7 @@ allData = {
 
 	"es2" : {
 
-		"file" : "NewData/easy_small_2.csv",
+		"file" : "data/clusters/easy_small_2.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 2, 1],
@@ -102,7 +102,7 @@ allData = {
 
 	"es3" : {
 
-		"file" : "NewData/easy_small_3.csv",
+		"file" : "data/clusters/easy_small_3.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 1],
@@ -152,7 +152,7 @@ allData = {
 
 	"es4" : {
 
-		"file" : "NewData/easy_small_4.csv",
+		"file" : "data/clusters/easy_small_4.csv",
 
 		"ggp" : {
 			"xRange" : [1, 4, 1],
@@ -202,7 +202,7 @@ allData = {
 
 	"es5" : {
 
-		"file" : "NewData/easy_small_5.csv",
+		"file" : "data/clusters/easy_small_5.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 1],
@@ -252,7 +252,7 @@ allData = {
 
 	"el1" : {
 
-		"file" : "NewData/easy_large_1.csv",
+		"file" : "data/clusters/easy_large_1.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 4, 2],
@@ -302,7 +302,7 @@ allData = {
 
 	"el2" : {
 
-		"file" : "NewData/easy_large_2.csv",
+		"file" : "data/clusters/easy_large_2.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
@@ -352,7 +352,7 @@ allData = {
 
 	"el3" : {
 
-		"file" : "NewData/easy_large_3.csv",
+		"file" : "data/clusters/easy_large_3.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 4, 2],
@@ -402,7 +402,7 @@ allData = {
 
 	"el4" : {
 
-		"file" : "NewData/easy_large_4.csv",
+		"file" : "data/clusters/easy_large_4.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 1, 2],
@@ -452,7 +452,7 @@ allData = {
 
 	"el5" : {
 
-		"file" : "NewData/easy_large_5.csv",
+		"file" : "data/clusters/easy_large_5.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 2],
@@ -502,7 +502,7 @@ allData = {
 
 	"hs1" : {
 
-		"file" : "NewData/hard_small_1.csv",
+		"file" : "data/clusters/hard_small_1.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 3, 2],
@@ -552,7 +552,7 @@ allData = {
 
 	"hs2" : {
 
-		"file" : "NewData/hard_small_2.csv",
+		"file" : "data/clusters/hard_small_2.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
@@ -602,7 +602,7 @@ allData = {
 
 	"hs3" : {
 
-		"file" : "NewData/hard_small_3.csv",
+		"file" : "data/clusters/hard_small_3.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 6, 2],
@@ -652,7 +652,7 @@ allData = {
 
 	"hs4" : {
 
-		"file" : "NewData/hard_small_4.csv",
+		"file" : "data/clusters/hard_small_4.csv",
 
 		"ggp" : {
 			"xRange" : [0, 5, 2],
@@ -702,7 +702,7 @@ allData = {
 
 	"hs5" : {
 
-		"file" : "NewData/hard_small_5.csv",
+		"file" : "data/clusters/hard_small_5.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 3, 2],
@@ -752,7 +752,7 @@ allData = {
 
 	"hl1" : {
 
-		"file" : "NewData/hard_large_1.csv",
+		"file" : "data/clusters/hard_large_1.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 8, 4],
@@ -802,7 +802,7 @@ allData = {
 
 	"hl2" : {
 
-		"file" : "NewData/hard_large_2.csv",
+		"file" : "data/clusters/hard_large_2.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 10, 4],
@@ -852,7 +852,7 @@ allData = {
 
 	"hl3" : {
 
-		"file" : "NewData/hard_large_3.csv",
+		"file" : "data/clusters/hard_large_3.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 10, 4],
@@ -902,7 +902,7 @@ allData = {
 
 	"hl4" : {
 
-		"file" : "NewData/hard_large_4.csv",
+		"file" : "data/clusters/hard_large_4.csv",
 
 		"ggp" : {
 			"xRange" : [-8, 10, 4],
@@ -952,7 +952,7 @@ allData = {
 
 	"hl5" : {
 
-		"file" : "NewData/hard_large_5.csv",
+		"file" : "data/clusters/hard_large_5.csv",
 
 		"ggp" : {
 			"xRange" : [-8, 10, 4],
@@ -1006,7 +1006,7 @@ allData = {
 
 	"cor_es1" : {
 
-		"file" : "NewData/correlation/easy_small_1.csv",
+		"file" : "data/correlation/easy_small_1.csv",
 
 		"ggp" : {
 			"xRange" : [-0.5, 1, 0.5],
@@ -1056,7 +1056,7 @@ allData = {
 
 	"cor_es2" : {
 
-		"file" : "NewData/correlation/easy_small_2.csv",
+		"file" : "data/correlation/easy_small_2.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
@@ -1106,7 +1106,7 @@ allData = {
 
 	"cor_es3" : {
 
-		"file" : "NewData/correlation/easy_small_3.csv",
+		"file" : "data/correlation/easy_small_3.csv",
 
 		"ggp" : {
 			"xRange" : [-8, 9, 4],
@@ -1156,7 +1156,7 @@ allData = {
 
 	"cor_es4" : {
 
-		"file" : "NewData/correlation/easy_small_4.csv",
+		"file" : "data/correlation/easy_small_4.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 1],
@@ -1206,7 +1206,7 @@ allData = {
 
 	"cor_es5" : {
 
-		"file" : "NewData/correlation/easy_small_5.csv",
+		"file" : "data/correlation/easy_small_5.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 1],
@@ -1256,7 +1256,7 @@ allData = {
 
 	"cor_el1" : {
 
-		"file" : "NewData/correlation/easy_large_1.csv",
+		"file" : "data/correlation/easy_large_1.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 4, 2],
@@ -1306,7 +1306,7 @@ allData = {
 
 	"cor_el2" : {
 
-		"file" : "NewData/correlation/easy_large_2.csv",
+		"file" : "data/correlation/easy_large_2.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 2],
@@ -1356,7 +1356,7 @@ allData = {
 
 	"cor_el3" : {
 
-		"file" : "NewData/correlation/easy_large_3.csv",
+		"file" : "data/correlation/easy_large_3.csv",
 
 		"ggp" : {
 			"xRange" : [-1, 2, 1],
@@ -1406,7 +1406,7 @@ allData = {
 
 	"cor_el4" : {
 
-		"file" : "NewData/correlation/easy_large_4.csv",
+		"file" : "data/correlation/easy_large_4.csv",
 
 		"ggp" : {
 			"xRange" : [-1, 2, 1],
@@ -1456,7 +1456,7 @@ allData = {
 
 	"cor_el5" : {
 
-		"file" : "NewData/correlation/easy_large_5.csv",
+		"file" : "data/correlation/easy_large_5.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 2],
@@ -1506,7 +1506,7 @@ allData = {
 
 	"cor_hs1" : {
 
-		"file" : "NewData/correlation/hard_small_1.csv",
+		"file" : "data/correlation/hard_small_1.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 1],
@@ -1556,7 +1556,7 @@ allData = {
 
 	"cor_hs2" : {
 
-		"file" : "NewData/correlation/hard_small_2.csv",
+		"file" : "data/correlation/hard_small_2.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 2],
@@ -1606,7 +1606,7 @@ allData = {
 
 	"cor_hs3" : {
 
-		"file" : "NewData/correlation/hard_small_3.csv",
+		"file" : "data/correlation/hard_small_3.csv",
 
 		"ggp" : {
 			"xRange" : [-2, 3, 2],
@@ -1656,7 +1656,7 @@ allData = {
 
 	"cor_hs4" : {
 
-		"file" : "NewData/correlation/hard_small_4.csv",
+		"file" : "data/correlation/hard_small_4.csv",
 
 		"ggp" : {
 			"xRange" : [-3, 4, 1],
@@ -1706,7 +1706,7 @@ allData = {
 
 	"cor_hs5" : {
 
-		"file" : "NewData/correlation/hard_small_5.csv",
+		"file" : "data/correlation/hard_small_5.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
@@ -1756,7 +1756,7 @@ allData = {
 
 	"cor_hl1" : {
 
-		"file" : "NewData/correlation/hard_large_1.csv",
+		"file" : "data/correlation/hard_large_1.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 3, 2],
@@ -1806,7 +1806,7 @@ allData = {
 
 	"cor_hl2" : {
 
-		"file" : "NewData/correlation/hard_large_2.csv",
+		"file" : "data/correlation/hard_large_2.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 3, 2],
@@ -1856,7 +1856,7 @@ allData = {
 
 	"cor_hl3" : {
 
-		"file" : "NewData/correlation/hard_large_3.csv",
+		"file" : "data/correlation/hard_large_3.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 6, 4],
@@ -1906,7 +1906,7 @@ allData = {
 
 	"cor_hl4" : {
 
-		"file" : "NewData/correlation/hard_large_4.csv",
+		"file" : "data/correlation/hard_large_4.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
@@ -1956,7 +1956,7 @@ allData = {
 
 	"cor_hl5" : {
 
-		"file" : "NewData/correlation/hard_large_5.csv",
+		"file" : "data/correlation/hard_large_5.csv",
 
 		"ggp" : {
 			"xRange" : [-4, 3, 2],

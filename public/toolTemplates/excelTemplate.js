@@ -422,67 +422,100 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		      }
 		    }
 
-		    /* LINE OF BEST FIT */
-		    else{
-		      svg.on("mousedown", mousedown)
-		         .on("mouseup", mouseup)
-		      var line_on = false;
-		      var line;
-		      var x1, x2, y1, y2;
+  	    /* LINE OF BEST FIT */
+  			else{
 
-		      function mousedown() {
-		      	if(line_on){
-		      		svg.selectAll("line.bestFitLine").remove();
-		      	}
-		          var m = d3.mouse(this);
-		          line = svg.append("line")
-		          	.attr("class", "bestFitLine")
-		              .attr("x1", m[0])
-		              .attr("y1", m[1])
-		              .attr("x2", m[0])
-		              .attr("y2", m[1]);
+  				svg.on("mousedown", mousedown)
+             .on("mouseup", mouseup)
+          var line_on = false;
+          var line;
+          var x1, x2, y1, y2;
 
-		          x1 = m[0]
-		          y1 = m[1]
+  				function calculateDistance(a, b, c, x, y){
+  					var numerator = Math.abs((a*x) - (b*y) + c)
+  					var denominator = Math.sqrt((a*a) + (b*b))
 
-		          line_on = true;
-		          svg.on("mousemove", mousemove);
-		      }
+  					return numerator/denominator
+  				}
 
-		      function mousemove() {
-		          var m = d3.mouse(this);
-		          line.attr("x2", m[0])
-		              .attr("y2", m[1]);
+  				function getMeanDistance(a, b, c){
 
-		          x2 = m[0]
-		          y2 = m[1]
-		      }
+  					var newData = data.filter(function(d){
+  						return d.class == main.class
+  					})
 
-		      function mouseup() {
-		          svg.on("mousemove", null);
-		          console.log(line)
-		          console.log('x1', x1)
-		          console.log('x2', x2)
-		          console.log('y1', y1)
-		          console.log('y2', y2)
-		          console.log('converted')
-		          x1 = x.invert(x1)
-		          x2 = x.invert(x2)
-		          y1 = y.invert(y1)
-		          y2 = y.invert(y2)
-		          console.log('x1', x1)
-		          console.log('x2', x2)
-		          console.log('y1', y1)
-		          console.log('y2', y2)
 
-		          var slope = (y2 - y1) / (x2 - x1)
-		          console.log('slope', slope)
-		          var yInt = y1 - (slope* x1)
-		          console.log('y intercept', yInt)
-		      }
-		    }
-		  });
-    }
+  					var dataLength = newData.length
+  					var totalDist = 0
 
+  					newData.forEach(function(each){
+  						each.dist = calculateDistance(a, b, c, x(each.x), y(each.y))
+  						totalDist += each.dist
+  					})
+
+
+  					return totalDist/dataLength
+  				}
+
+
+  				function mousedown() {
+  					if(line_on){
+  						svg.selectAll("line.bestFitLine").remove();
+  					}
+
+  					if(main.clicks == 0){
+  						main.startTime = Date.now()
+  					}
+
+  					var m = d3.mouse(this);
+  					line = svg.append("line")
+  						.attr("class", "bestFitLine")
+  							.attr("x1", m[0])
+  							.attr("y1", m[1])
+  							.attr("x2", m[0])
+  							.attr("y2", m[1]);
+
+  						x1 = m[0]
+  						y1 = m[1]
+
+  						line_on = true;
+  						svg.on("mousemove", mousemove);
+  				}
+
+  				function mousemove() {
+  						var m = d3.mouse(this);
+  						line.attr("x2", m[0])
+  								.attr("y2", m[1]);
+
+  						x2 = m[0]
+  						y2 = m[1]
+  				}
+
+  				function mouseup() {
+  						svg.on("mousemove", null);
+  						var a = (y2 - y1) / (x2 - x1)
+  						var c = y1 - (a * (x1))
+
+  						avgDist = getMeanDistance(a, 1, c);
+
+  						main.endTime = Date.now();
+  						main.timeDiff = main.endTime - main.startTime
+  						main.clicks += 1;
+  						main.avgDist = avgDist;
+  						main.slope = a;
+  						main.intercept = c;
+
+  						if(avgDist == 0 || isNaN(avgDist)){
+  							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
+  							experimentr.hold();
+
+  						} else {
+  							document.getElementById('warning').innerHTML = "";
+  							experimentr.release();
+  						}
+  				}
+  			}
+  	});
+  }
   return main;
 }

@@ -1,0 +1,268 @@
+<link rel="stylesheet" type="text/css" href="../toolCSS/plot.css" />
+
+<link rel="stylesheet" type="text/css" href="../toolCSS/baseRStyle.css" />
+<div id="section3-intro">
+
+<h3>Task 3 Training</h3>
+<p>
+  The next section will test your ability to identify the line of best fit in a multi-class scatterplot.
+	The line of best fit is a straight line that best represents the trend of a given scatterplot. The following questions
+	will ask you to identify this line for a particular class. A good line of best fit will minimize the perpendicular distance between
+	the line and all the points.
+</p>
+<p>
+
+<p class="center">
+  <strong>Try it out below! Press and drag on the plot below to draw your line of best fit for class A.</strong>
+</p>
+</div>
+<div id="plot">
+
+<div id="warning"></div>
+
+</div>
+<script>
+
+//Removes the text select cursor maintains regular cursor during mouse activity
+document.getElementById( "plot" ).onmousedown = function(event){
+    event.preventDefault();
+};
+var margin = {top: 50, right: 50, bottom: 50, left:50};
+var width = 600 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
+
+
+//Change this for other tools
+var classColors = ["black", "#FF0000", "#33cc33" , "#0000FF"]
+
+
+//Change for other tools
+xRange = [-2, 5, 2];
+yRange = [-4, 4, 2];
+
+xDom = [-3, 4];
+yDom = [-4, 4];
+
+
+var main = {"clicks" : 0,
+            "startTime":null,
+            "endTime":null,
+            "dataFile": '../../data/correlation_intro.csv',
+						"class":"A"
+          }
+
+var svg = d3.select('#plot')
+  .append('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom)
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+  // .on("mousedown", mousedown)
+  // .on("mouseup", mouseup);
+
+var x = d3.scaleLinear()
+  .range([margin.left, width]);
+
+var y = d3.scaleLinear()
+  .range([height, margin.left]);
+
+//hardcoding domain
+x.domain(xDom);
+y.domain(yDom);
+
+
+  // Upper Horizontal Line
+svg.append('line')
+  .attr('class', 'border')
+  .attr('x1', margin.left)
+  .attr('x2', width)
+  .attr('y1', margin.top)
+  .attr('y2', margin.top)
+
+
+//Right verticle Line
+svg.append('line')
+  .attr('class', 'border')
+  .attr('x1', width)
+  .attr('x2', width)
+  .attr('y1', margin.top)
+  .attr('y2', height)
+
+
+var xAxis = d3.axisBottom()
+  .scale(x)
+  .tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
+  .tickFormat(d3.format(".1f"))
+  .tickSizeOuter(0);
+
+var yAxis = d3.axisLeft()
+  .scale(y)
+  .tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
+  .tickFormat(d3.format(".1f"))
+  .tickSizeOuter(0);
+
+
+// again scaleOrdinal
+var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
+.range(classColors);;
+
+d3.csv(main.dataFile, function(error, data){
+  data.forEach(function(d){
+     d.x = +d.x;
+     d.y = +d.y;
+  });
+
+  svg.append('g')
+    .attr('transform', 'translate(0,' + height+ ')')
+    .attr('class', 'x axis')
+    .call(xAxis);
+
+  svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ',0)')
+    .attr('class', 'y axis')
+    .call(yAxis);
+
+
+  var bubble = svg.selectAll('.bubble')
+    .data(data)
+    .enter().append('circle')
+    .attr('class', 'bubble')
+    .attr('cx', function(d){return x(d.x);})
+    .attr('cy', function(d){ return y(d.y); })
+    .attr('r', 3)
+    .style('stroke', function(d){ return color(d.class); })
+    .style('fill', 'none');
+
+  svg.append('text')
+    .attr('x', 5)
+    .attr('y', height/2)
+    .attr('class', 'label')
+    .text('y');
+
+
+  svg.append('text')
+    .attr('x', width/2)
+    .attr('y', height + 40)
+    .attr('text-anchor', 'end')
+    .attr('class', 'label')
+    .text('x');
+
+  var legend = svg.selectAll('legend')
+    .data(color.domain())
+    .enter()
+    .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
+
+  legend.append('rect')
+    .attr('x', width)
+    .attr('width', 15)
+    .attr('height', 15)
+    .style('fill', color);
+
+  // add text to the legend elements.
+  // rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
+  legend.append('text')
+    .attr('x', width - 6)
+    .attr('y', 8)
+    .attr('dy', '.35em')
+    .style('text-anchor', 'end')
+    .text(function(d){ return d; });
+
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', 40)
+    .style('text-anchor', 'middle')
+		.text('Average distance to all points: ')
+
+  var lbfText = svg.append('text')
+    .attr('x', (width/2) + 130)
+    .attr('y', 40)
+    .style('text-anchor', 'start')
+    .text('0')
+
+  svg.on("mousedown", mousedown)
+     .on("mouseup", mouseup);
+
+	 function calculateDistance(a, b, c, x, y){
+		 var numerator = Math.abs((a*x) - (b*y) + c)
+		 var denominator = Math.sqrt((a*a) + (b*b))
+
+		 return numerator/denominator
+	 }
+
+	 function getMeanDistance(a, b, c){
+
+		 var newData = data.filter(function(d){
+			 return d.class == main.class
+		 })
+
+
+		 var dataLength = newData.length
+		 var totalDist = 0
+
+		 newData.forEach(function(each){
+			 each.dist = calculateDistance(a, b, c, x(each.x), y(each.y))
+			 totalDist += each.dist
+		 })
+
+
+		 return totalDist/dataLength
+	 }
+
+	 var line_on = false;
+	 var line;
+	 var x1, x2, y1, y2;
+
+	 function mousedown() {
+		 if(line_on){
+			 svg.selectAll("line.bestFitLine").remove();
+		 }
+			 var m = d3.mouse(this);
+			 line = svg.append("line")
+				 .attr("class", "bestFitLine")
+					 .attr("x1", m[0])
+					 .attr("y1", m[1])
+					 .attr("x2", m[0])
+					 .attr("y2", m[1]);
+
+			 x1 = m[0]
+			 y1 = m[1]
+
+			 line_on = true;
+			 svg.on("mousemove", mousemove);
+	 }
+
+	 function mousemove() {
+			 var m = d3.mouse(this);
+			 line.attr("x2", m[0])
+					 .attr("y2", m[1]);
+
+			 x2 = m[0]
+			 y2 = m[1]
+
+			var a = (y2 - y1) / (x2 - x1)
+			var c = y1 - (a * (x1))
+
+		 avgDist = getMeanDistance(a, 1, c);
+
+		 lbfText.text((Math.round(avgDist* 100)/ 100)) //Rounding to two decimal places
+
+	 }
+
+	 function mouseup() {
+			 svg.on("mousemove", null);
+
+	 }
+
+});
+</script>
+
+<script>
+	(function() {
+		experimentr.startTimer('task3-intro');
+		experimentr.release();
+		experimentr.onNext(function() {
+			experimentr.endTimer('task3-intro');
+		});
+	}());
+</script>

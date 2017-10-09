@@ -58,12 +58,12 @@ console.log("randomize tools", allTools)
 console.log("randomize nums", datasetNums)
 
 var modules = [
-  // 'modules/aes_consent/',
-  // 'modules/aes_demographics/',
-  // 'modules/aes_familiarity/',
-	// 'modules/aes_pref1',
-	// 'modules/aes_task1_intro',
-	'modules/aes_task3/',
+  'modules/aes_consent/',
+  'modules/aes_demographics/',
+  'modules/aes_familiarity/',
+	'modules/aes_pref1',
+
+	'modules/aes_task1_intro',
 	'modules/aes_task1/easy_small/' + allTools[0] + datasetNums[0],
 	'modules/aes_task1/easy_small/' + allTools[1] + datasetNums[1],
 	'modules/aes_task1/easy_small/' + allTools[2] + datasetNums[2],
@@ -86,37 +86,48 @@ var modules = [
 	'modules/aes_task1/hard_large/' + allTools[4] + datasetNums[4],
 
 	'modules/aes_task2_intro',
-	// 'modules/aes_task2/easy_small/' + allTools[0] + datasetNums[0],
-	// 'modules/aes_task2/easy_small/' + allTools[1] + datasetNums[1],
-	// 'modules/aes_task2/easy_small/' + allTools[2] + datasetNums[2],
-	// 'modules/aes_task2/easy_small/' + allTools[3] + datasetNums[3],
-	// 'modules/aes_task2/easy_small/' + allTools[4] + datasetNums[4],
-	// 'modules/aes_task2/easy_large/' + allTools[0] + datasetNums[0],
-	// 'modules/aes_task2/easy_large/' + allTools[1] + datasetNums[1],
-	// 'modules/aes_task2/easy_large/' + allTools[2] + datasetNums[2],
-	// 'modules/aes_task2/easy_large/' + allTools[3] + datasetNums[3],
-	// 'modules/aes_task2/easy_large/' + allTools[4] + datasetNums[4],
-	'modules/aes_task2/hard_small/' + allTools[0] + datasetNums[1],
-	'modules/aes_task2/hard_small/' + allTools[1] + datasetNums[2],
-	'modules/aes_task2/hard_small/' + allTools[2] + datasetNums[3],
-	'modules/aes_task2/hard_small/' + allTools[3] + datasetNums[4],
-	'modules/aes_task2/hard_small/' + allTools[4] + datasetNums[0],
-	'modules/aes_task2/hard_large/' + allTools[0] + datasetNums[1],
-	'modules/aes_task2/hard_large/' + allTools[1] + datasetNums[2],
-	'modules/aes_task2/hard_large/' + allTools[2] + datasetNums[3],
-	'modules/aes_task2/hard_large/' + allTools[3] + datasetNums[4],
-	'modules/aes_task2/hard_large/' + allTools[4] + datasetNums[0],
+	'modules/aes_task2/cluster_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/cluster_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/cluster_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/cluster_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/cluster_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task2/cluster_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/cluster_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/cluster_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/cluster_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/cluster_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task2/cor_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/cor_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/cor_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/cor_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/cor_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task2/cor_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task2/cor_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task2/cor_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task2/cor_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task2/cor_large/' + allTools[4] + datasetNums[4],
 
-	'modules/aes_task2/hard_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/hard_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/hard_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/hard_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/hard_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task2/hard_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/hard_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/hard_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/hard_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/hard_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task3_intro',
+	'modules/aes_task3/easy_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task3/easy_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task3/easy_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task3/easy_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task3/easy_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task3/easy_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task3/easy_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task3/easy_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task3/easy_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task3/easy_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task3/hard_small/' + allTools[0] + datasetNums[0],
+	'modules/aes_task3/hard_small/' + allTools[1] + datasetNums[1],
+	'modules/aes_task3/hard_small/' + allTools[2] + datasetNums[2],
+	'modules/aes_task3/hard_small/' + allTools[3] + datasetNums[3],
+	'modules/aes_task3/hard_small/' + allTools[4] + datasetNums[4],
+	'modules/aes_task3/hard_large/' + allTools[0] + datasetNums[0],
+	'modules/aes_task3/hard_large/' + allTools[1] + datasetNums[1],
+	'modules/aes_task3/hard_large/' + allTools[2] + datasetNums[2],
+	'modules/aes_task3/hard_large/' + allTools[3] + datasetNums[3],
+	'modules/aes_task3/hard_large/' + allTools[4] + datasetNums[4],
 
 	'modules/aes_pref2',
   'modules/debrief/'
@@ -125,12 +136,15 @@ var modules = [
 //Randomize order of test modules, keeping consent as first and debrief as last
 var numModules = modules.length;
 var task1start = 5;
-var task1end = 24;
-var task2start = task1end + 2
-var task2end = 45
+var task1end = task1start + 19; // There are 20 questions per task
+var task2start = task1end + 2; // +2 to account for the intro to the next task
+var task2end = task2start + 19;
+var task3start = task2end + 2;
+var task3end = task3start + 19;
 
 var randomIndex;
 
+//First randomizing task 1 questions
 for (var i = task1start; i <= task1end; i++) {
 	randomIndex = getRandomInteger(i, task1end);
 	var temp = modules[i];
@@ -138,9 +152,7 @@ for (var i = task1start; i <= task1end; i++) {
 	modules[randomIndex] = temp;
 }
 
-
-var randomIndex;
-
+//Randomizing task 2 questions
 for (var i = task2start; i <= task2end; i++) {
 	randomIndex = getRandomInteger(i, task2end);
 	var temp = modules[i];
@@ -148,8 +160,17 @@ for (var i = task2start; i <= task2end; i++) {
 	modules[randomIndex] = temp;
 }
 
+//Randomizing task 3 questions
+for (var i = task2start; i <= task2end; i++) {
+	randomIndex = getRandomInteger(i, task2end);
+	var temp = modules[i];
+	modules[i] = modules[randomIndex];
+	modules[randomIndex] = temp;
+}
+
+
 console.log("randomized modules", modules)
-// Add randomized module order to session tracking;
+//Add randomized module order to session tracking;
 var storeInfo = {};
 storeInfo['module_order'] = modules.join().replace(/modules\//g,"");
 experimentr.addData(storeInfo);
