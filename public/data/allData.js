@@ -307,34 +307,34 @@ allData = {
 		"ggp" : {
 			"xRange" : [-4, 5, 2],
 			"yRange" : [-4, 3, 2],
-			"xDom" : [-4, 4.25],
+			"xDom" : [-4.5, 4.5],
 			"yDom" : [-4.5, 3],
 			"xFormat" :  false,
 			"yFormat" : false
 		},
 
 		"exl" : {
-			"xRange" : [-4, 6, 1],
+			"xRange" : [-5, 6, 1],
 			"yRange" : [-5, 4, 1],
-			"xDom" : [-4, 5],
+			"xDom" : [-5, 5],
 			"yDom" : [-5, 3],
 			"xFormat" :  true,
 			"yFormat" : true
 		},
 
 		"mpl" : {
-			"xRange" : [-4, 5, 1],
+			"xRange" : [-5, 6, 1],
 			"yRange" : [-5, 4, 1],
-			"xDom" : [-4, 4],
+			"xDom" : [-5, 5],
 			"yDom" : [-5, 3],
 			"xFormat" :  true,
 			"yFormat" : true
 		},
 
 		"tbl" : {
-			"xRange" : [-4, 5, 1],
+			"xRange" : [-5, 5, 1],
 			"yRange" : [-4, 5, 1],
-			"xDom" : [-4, 4.25],
+			"xDom" : [-5, 4.5],
 			"yDom" : [-4.5, 4.25],
 			"xFormat" :  false,
 			"yFormat" : false
@@ -343,7 +343,7 @@ allData = {
 		"baseR" : {
 			"xRange" : [-4, 5, 2],
 			"yRange" : [-4, 3, 2],
-			"xDom" : [-4, 4.25],
+			"xDom" : [-4.5, 4.5],
 			"yDom" : [-4.5, 3],
 			"xFormat" :  false,
 			"yFormat" : false
@@ -958,7 +958,7 @@ allData = {
 			"xRange" : [-8, 10, 4],
 			"yRange" : [-8, 10, 4],
 			"xDom" : [-10, 8.5],
-			"yDom" : [-9, 6],
+			"yDom" : [-9, 8],
 			"xFormat" :  false,
 			"yFormat" : false
 		},

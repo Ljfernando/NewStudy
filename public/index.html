@@ -39,7 +39,7 @@ function getRandomInteger(lower, upper) {
  */
 var allTools = ["baseR", "exl", "ggp", "mpl", "tbl"]
 var datasetNums = [1, 2, 3, 4, 5]
-
+var allDiff = ["es", "el", "hs", "hl"]
 // Randomizes the arrays above
 function randomizeArray(array){
 	for (var i = 0; i < array.length; i++) {
@@ -54,82 +54,88 @@ function randomizeArray(array){
 
 allTools = randomizeArray(allTools)
 datasetNums = randomizeArray(datasetNums)
-console.log("randomize tools", allTools)
-console.log("randomize nums", datasetNums)
+
+var questionOrder = [];
+for(i = 0; i < allDiff.length; i++){
+	for(j = 0; j < allTools.length; j ++){
+		questionOrder[(i*5) + j] = allTools[j] +","+ allDiff[i] + datasetNums[j];
+	}
+}
+
+questionOrder = randomizeArray(questionOrder)
+console.log("questionOrder", questionOrder)
+
 
 var modules = [
+	// 'modules/aes_test',
   'modules/aes_consent/',
-  'modules/aes_demographics/',
-  'modules/aes_familiarity/',
-	'modules/aes_pref1',
-
+  // 'modules/aes_demographics/',
+  // 'modules/aes_familiarity/',
+	// 'modules/aes_pref1',
 	'modules/aes_task1_intro',
-	'modules/aes_task1/easy_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task1/easy_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task1/easy_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task1/easy_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task1/easy_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task1/easy_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task1/easy_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task1/easy_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task1/easy_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task1/easy_large/' + allTools[4] + datasetNums[4],
-	'modules/aes_task1/hard_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task1/hard_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task1/hard_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task1/hard_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task1/hard_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task1/hard_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task1/hard_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task1/hard_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task1/hard_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task1/hard_large/' + allTools[4] + datasetNums[4],
-
+	'modules/aes_task1/',
+	'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
+	// 'modules/aes_task1/',
 	'modules/aes_task2_intro',
-	'modules/aes_task2/cluster_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/cluster_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/cluster_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/cluster_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/cluster_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task2/cluster_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/cluster_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/cluster_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/cluster_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/cluster_large/' + allTools[4] + datasetNums[4],
-	'modules/aes_task2/cor_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/cor_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/cor_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/cor_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/cor_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task2/cor_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task2/cor_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task2/cor_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task2/cor_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task2/cor_large/' + allTools[4] + datasetNums[4],
-
+	'modules/aes_task2/',
+	'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
+	// 'modules/aes_task2/',
 	'modules/aes_task3_intro',
-	'modules/aes_task3/easy_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task3/easy_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task3/easy_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task3/easy_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task3/easy_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task3/easy_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task3/easy_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task3/easy_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task3/easy_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task3/easy_large/' + allTools[4] + datasetNums[4],
-	'modules/aes_task3/hard_small/' + allTools[0] + datasetNums[0],
-	'modules/aes_task3/hard_small/' + allTools[1] + datasetNums[1],
-	'modules/aes_task3/hard_small/' + allTools[2] + datasetNums[2],
-	'modules/aes_task3/hard_small/' + allTools[3] + datasetNums[3],
-	'modules/aes_task3/hard_small/' + allTools[4] + datasetNums[4],
-	'modules/aes_task3/hard_large/' + allTools[0] + datasetNums[0],
-	'modules/aes_task3/hard_large/' + allTools[1] + datasetNums[1],
-	'modules/aes_task3/hard_large/' + allTools[2] + datasetNums[2],
-	'modules/aes_task3/hard_large/' + allTools[3] + datasetNums[3],
-	'modules/aes_task3/hard_large/' + allTools[4] + datasetNums[4],
+	'modules/aes_task3/',
+	'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
+	// 'modules/aes_task3/',
 
-	'modules/aes_pref2',
   'modules/debrief/'
 ];
 
@@ -144,35 +150,40 @@ var task3end = task3start + 19;
 
 var randomIndex;
 
-//First randomizing task 1 questions
-for (var i = task1start; i <= task1end; i++) {
-	randomIndex = getRandomInteger(i, task1end);
-	var temp = modules[i];
-	modules[i] = modules[randomIndex];
-	modules[randomIndex] = temp;
-}
-
-//Randomizing task 2 questions
-for (var i = task2start; i <= task2end; i++) {
-	randomIndex = getRandomInteger(i, task2end);
-	var temp = modules[i];
-	modules[i] = modules[randomIndex];
-	modules[randomIndex] = temp;
-}
-
-//Randomizing task 3 questions
-for (var i = task2start; i <= task2end; i++) {
-	randomIndex = getRandomInteger(i, task2end);
-	var temp = modules[i];
-	modules[i] = modules[randomIndex];
-	modules[randomIndex] = temp;
-}
+// //First randomizing task 1 questions
+// for (var i = task1start; i <= task1end; i++) {
+// 	randomIndex = getRandomInteger(i, task1end);
+// 	var temp = modules[i];
+// 	modules[i] = modules[randomIndex];
+// 	modules[randomIndex] = temp;
+// }
+//
+// //Randomizing task 2 questions
+// for (var i = task2start; i <= task2end; i++) {
+// 	randomIndex = getRandomInteger(i, task2end);
+// 	var temp = modules[i];
+// 	modules[i] = modules[randomIndex];
+// 	modules[randomIndex] = temp;
+// }
+//
+// //Randomizing task 3 questions
+// for (var i = task2start; i <= task2end; i++) {
+// 	randomIndex = getRandomInteger(i, task2end);
+// 	var temp = modules[i];
+// 	modules[i] = modules[randomIndex];
+// 	modules[randomIndex] = temp;
+// }
 
 
 console.log("randomized modules", modules)
 //Add randomized module order to session tracking;
 var storeInfo = {};
 storeInfo['module_order'] = modules.join().replace(/modules\//g,"");
+storeInfo['tool_order'] = allTools;
+storeInfo['data_order'] = datasetNums;
+storeInfo["question_order"] = questionOrder;
+storeInfo['curr_question'] = 0;
+storeInfo['total_questions'] = modules.length - 1;
 experimentr.addData(storeInfo);
 
 experimentr.sequence(modules).start();

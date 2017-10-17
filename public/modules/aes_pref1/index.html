@@ -1,3 +1,9 @@
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<div class="w3-light-grey w3-round-xlarge">
+  <div id="progressBar" class="w3-container w3-blue w3-round-xlarge w3-center"></div>
+</div>
+
 <style>
 table {
     font-family: arial, sans-serif;
@@ -113,6 +119,13 @@ tr:nth-child(even) {
 </div>
 <script>
 (function() {
+  // Updating question number
+  var saved = experimentr.data();
+  saved["curr_question"] += 1;
+  progBar = document.getElementById('progressBar');
+  progBar.style.width = String(Math.round((saved["curr_question"] / saved["total_questions"]) * 100)) + '%'
+  progBar.innerHTML = String(Math.round((saved["curr_question"] / saved["total_questions"]) * 100)) + '%'
+
   var data = {};
 
   //experimentr.startTimer('demo');

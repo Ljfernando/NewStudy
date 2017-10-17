@@ -59,14 +59,14 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   var yGridLength = d3.range(yRange[0], yRange[1], yRange[2]).length;
 
   // gridlines in x axis function
-  function make_xMajor_gridlines() {
+  function make_xMajor_gridlines_mpl() {
       return d3.axisBottom(x)
           .ticks(xGridLength)
   }
 
 
   // gridlines in y axis function
-  function make_yMajor_gridlines() {
+  function make_yMajor_gridlines_mpl() {
       return d3.axisLeft(y)
           .ticks(yGridLength)
   }
@@ -111,7 +111,7 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   	svg.append("g")
         .attr("class", "mplMajorGrid")
         .attr("transform", "translate(0," + height + ")")
-        .call(make_xMajor_gridlines()
+        .call(make_xMajor_gridlines_mpl()
             .tickSize(-(height - margin.top))
             .tickFormat("")
         )
@@ -121,7 +121,7 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
     svg.append("g")
         .attr("class", "mplMajorGrid")
   			.attr("transform", "translate("+margin.left+",0)")
-        .call(make_yMajor_gridlines()
+        .call(make_yMajor_gridlines_mpl()
             .tickSize(-(width - margin.right))
             .tickFormat("")
         )
@@ -375,7 +375,10 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
             var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
 
-            main.valid = function(){return isValidCoor(xUser, yUser)}
+						main.valid = (isValidCoor(denseBoundaries.tR.x, denseBoundaries.tR.y) &&
+													isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y) &&
+													isValidCoor(denseBoundaries.tL.x, denseBoundaries.tL.y) &&
+													isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y))
             main.endTime = Date.now();
             main.timeDiff = main.endTime - main.startTime
             main.clicks += 1;
@@ -472,6 +475,9 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 						avgDist = getMeanDistance(a, 1, c);
 
+						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
+		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
+		                      (avgDist != 0 || !isNaN(avgDist)))
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
@@ -479,14 +485,13 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 						main.slope = a;
 						main.intercept = c;
 
-						if(avgDist == 0 || isNaN(avgDist)){
-							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
-							experimentr.hold();
-
-						} else {
+						if(main.valid){
 							document.getElementById('warning').innerHTML = "";
 							experimentr.release();
-						}
+						} else {
+							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
+							experimentr.hold();
+					}
 				}
 			}
 		});

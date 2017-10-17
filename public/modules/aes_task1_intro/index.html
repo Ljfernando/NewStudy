@@ -1,9 +1,12 @@
 <link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="toolCSS/baseRStyle.css" />
 
-<!-- <script language="javascript" type="text/javascript" src="../../../toolTemplates/baseRTemplate.js"></script>
-<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
- -->
+<div class="w3-light-grey w3-round-xlarge">
+ <div id="progressBar" class="w3-container w3-blue w3-round-large w3-center">2%</div>
+</div>
+
 <div id="task1-intro">
 
 <h2 class="placeholder">Task 1 Training</h2>
@@ -15,17 +18,16 @@
   <strong><div id = "question"></div></strong>
 </p>
 </div>
-  <div id="answer">
-  <button type="button"
-        onclick="realCentroid()">Click for real answer!</button>
-        The yellow circle indicates the actual centroid of the given class.
 
-  </div>
-  <div id="plot"></div>
-
-  <div id="warning"></div>
+<div id="answer">
+<button type="button"
+      onclick="realCentroid()">Click for real answer!</button>
+      The yellow circle indicates the actual centroid of the given class.
 
 </div>
+<div id="plot"></div>
+
+<div id="warning"></div>
 <script>
 
   // console.log("random tool:", DataCombos.allTools)
@@ -333,10 +335,24 @@ d3.csv("data/ScatterplotData2.csv", function(error, data){
 
 
   (function() {
+    // Updating question number
+    var saved = experimentr.data();
+    curr_question = saved["curr_question"];
+		var total_questions = saved["total_questions"]
+    progBar = document.getElementById('progressBar');
+    progBar.style.width = String(Math.round((curr_question / total_questions) * 100)) + '%'
+    progBar.innerHTML = String(Math.round((curr_question/ total_questions) * 100)) + '%'
 
 		experimentr.startTimer("task1_intro");
 		experimentr.onNext(function() {
 			experimentr.endTimer("task1_intro");
+      var storeInfo = {}
+      //Restarting data index and incrementing current question
+      storeInfo["data_idx"] = 0
+      storeInfo["curr_question"] = curr_question + 1
+      console.log("info", storeInfo);	//TODO remove debugging
+      experimentr.addData(storeInfo);
+
 		});
 
 	}());

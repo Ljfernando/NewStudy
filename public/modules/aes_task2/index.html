@@ -1,0 +1,192 @@
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
+
+
+<div class="w3-light-grey w3-round-xlarge">
+	<div id="progressBar" class="w3-container w3-blue w3-round-large w3-center">2%</div>
+</div>
+
+<div id="task2">
+	<h2 class="placeholder">Task2</h2>
+	<p>
+		<strong>Click anywhere to activate the grey circle. Then drag to indicated area.</strong>
+	</p>
+		<div id="question"></div>
+		<div id="help"></div>
+		<div id="plot"></div>
+		<div id="warning"></div>
+</div>
+
+<script>
+
+	function loadCSS(path){
+		var cssId = 'myCss';
+		var head  = document.getElementsByTagName('head')[0];
+		var link  = document.createElement('link');
+		link.id   = 'mycss';
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+		link.href = path;
+		link.media = 'all';
+		head.appendChild(link);
+	}
+
+	function loadScript(path){
+		var scriptId = 'myScript'
+		var head = document.getElementsByTagName('head')[0];
+		var script = document.createElement('script');
+		script.language = 'javascript';
+		script.type = 'text/javascript';
+		script.src = path
+		head.appendChild(script);
+	}
+
+	//Removes the text select cursor maintains regular cursor during mouse activity
+	document.getElementById( "plot" ).onmousedown = function(event){
+	    event.preventDefault();
+	};
+
+	experimentr.hold();
+
+	var taskResponse = {};
+	var tool;
+	var tag;
+	var curr_data;
+	var curr_question;
+
+	(function(){
+		// Updating progressBar number
+    var saved = experimentr.data();
+    curr_question = saved["curr_question"];
+		var total_questions = saved["total_questions"]
+		curr_data = saved["data_idx"] //Grabbing the current data index
+
+
+    progBar = document.getElementById('progressBar');
+    progBar.style.width = String(Math.round((curr_question / total_questions) * 100)) + '%'
+    progBar.innerHTML = String(Math.round((curr_question/ total_questions) * 100)) + '%'
+
+
+		var dataPath = saved["question_order"][curr_data] //Grabbing actual dataset attributes
+
+		tool = dataPath.split(",")[0]
+		var dataNum = dataPath.split(",")[1]
+
+    var dataObj;
+
+    console.log("slice", dataNum.substr(0, 2))
+    console.log("num", dataNum.substr(2,3))
+
+    switch(dataNum.substr(0,2)){ //Accessing data difficulty/size (i.e., es, el, hs, hl)
+      case "es":
+        dataObj = allData["hs" + dataNum.substr(2,3)]; //Grabbing hard, small cluster data
+        dataNum = "clus_hs" + dataNum.substr(2,3); //datanumber
+        break;
+
+      case "el":
+        dataObj = allData["hl" + dataNum.substr(2,3)]; //Grabbing hard, small cluster data
+        dataNum = "clus_hl" + dataNum.substr(2,3); //datanumber
+        break;
+
+      case "hs":
+        dataObj = allData["cor_hs" + dataNum.substr(2,3)]; //Grabbing hard, small cluster data
+        dataNum = "cor_hs" + dataNum.substr(2,3); //datanumber
+        break;
+
+      case "hl":
+        dataObj = allData["cor_hl" + dataNum.substr(2,3)]; //Grabbing hard, small cluster data
+        dataNum = "cor_hl" + dataNum.substr(2,3); //datanumber
+        break;
+
+      default:
+        dataObj = allData[dataNum]; //Grabbing hard, small cluster data
+        break;
+    }
+
+		tag = "t2" + dataNum;
+
+		taskNum = 2;
+
+
+
+		switch(tool) {
+				case "ggp":
+					loadCSS("toolCSS/ggplotStyle.css")
+					loadScript("toolTemplates/ggplotTemplate.js")
+					taskResponse = ggpPlot(taskNum, dataObj.file, dataObj.ggp.xRange, dataObj.ggp.yRange, dataObj.ggp.xDom, dataObj.ggp.yDom, dataObj.ggp.xFormat, dataObj.ggp.yFormat)
+					break;
+
+		    case "exl":
+					loadCSS("toolCSS/excelStyle.css")
+					loadScript("toolTemplates/excelTemplate.js")
+					taskResponse = exlPlot(taskNum, dataObj.file, dataObj.exl.xRange, dataObj.exl.yRange, dataObj.exl.xDom, dataObj.exl.yDom, dataObj.exl.xFormat, dataObj.exl.yFormat)
+					break;
+
+				case "mpl":
+					loadCSS("toolCSS/matplotlibStyle.css")
+					loadScript("toolTemplates/matplotlibTemplate.js")
+					taskResponse = mplPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.mpl.yRange, dataObj.mpl.xDom, dataObj.mpl.yDom, dataObj.mpl.xFormat, dataObj.mpl.yFormat)
+					break;
+
+				case "tbl":
+					loadCSS("toolCSS/tableauStyle.css")
+					loadScript("toolTemplates/tableauTemplate.js")
+					taskResponse = tblPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.tbl.yRange, dataObj.tbl.xDom, dataObj.tbl.yDom, dataObj.tbl.xFormat, dataObj.tbl.yFormat)
+					break;
+
+				case "baseR":
+					loadCSS("toolCSS/baseRStyle.css")
+					loadScript("toolTemplates/baseRTemplate.js")
+					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat)
+					break;
+
+		    default:
+					loadCSS("toolCSS/baseRStyle.css")
+					loadScript("toolTemplates/baseRTemplate.js")
+					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat)
+					break;
+		}
+
+
+		taskResponse.createBaseLayer();
+		taskResponse.createLegend();
+		taskResponse.plotData();
+
+		var storeInfo = {};
+
+		var question = "Click and drag the grey circle to the centroid of class " + taskResponse.class
+
+		document.getElementById("question").innerHTML = question
+	})
+
+	(function() {
+
+		experimentr.startTimer("aes_task2");
+		experimentr.onNext(function() {
+			experimentr.endTimer("aes_task2");
+
+      //updating info
+			storeInfo[tag+"_tool"] = tool
+			storeInfo[tag+"_clicks"] = taskResponse.clicks;
+      storeInfo[tag+"_startTime"] = taskResponse.startTime;
+      storeInfo[tag+"_endTime"] = taskResponse.endTime;
+      storeInfo[tag+"_timeDiff"] = taskResponse.endTime - taskResponse.startTime;
+      storeInfo[tag+"_density"] = taskResponse.density;
+      storeInfo[tag+"_xMax"] = taskResponse.xMax;
+      storeInfo[tag+"_xMin"] = taskResponse.xMin;
+      storeInfo[tag+"_yMax"] = taskResponse.yMax;
+      storeInfo[tag+"_yMin"] = taskResponse.yMin;
+
+			storeInfo["data_idx"] = curr_data + 1
+			storeInfo["curr_question"] = curr_question + 1
+
+			console.log("info", storeInfo);	//TODO remove debugging
+			experimentr.addData(storeInfo);
+		});
+
+	}());
+
+</script>

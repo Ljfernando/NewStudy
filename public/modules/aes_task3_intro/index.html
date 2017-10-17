@@ -1,9 +1,15 @@
-<link rel="stylesheet" type="text/css" href="../toolCSS/plot.css" />
+<link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="toolCSS/baseRStyle.css" />
 
-<link rel="stylesheet" type="text/css" href="../toolCSS/baseRStyle.css" />
-<div id="section3-intro">
+<div id="task3-intro">
 
-<h3>Task 3 Training</h3>
+<div class="w3-light-grey w3-round-xlarge">
+  <div id="progressBar" class="w3-container w3-blue w3-round-large w3-center">2%</div>
+</div>
+
+<h2 class="placeholder">Task 3 Training</h2>
 <p>
   The next section will test your ability to identify the line of best fit in a multi-class scatterplot.
 	The line of best fit is a straight line that best represents the trend of a given scatterplot. The following questions
@@ -14,6 +20,8 @@
 
 <p class="center">
   <strong>Try it out below! Press and drag on the plot below to draw your line of best fit for class A.</strong>
+  The minimum distance between your line and class A points is located above the plot.
+  The your best line will be shown in orange and the minimum distance is provided as text as well.
 </p>
 </div>
 <div id="plot">
@@ -27,6 +35,9 @@
 document.getElementById( "plot" ).onmousedown = function(event){
     event.preventDefault();
 };
+
+//Helper function that returns true if the user choice is within the give range of the chart and false otherwise
+
 var margin = {top: 50, right: 50, bottom: 50, left:50};
 var width = 600 - margin.left - margin.right;
 var height = 500 - margin.top - margin.bottom;
@@ -43,6 +54,13 @@ yRange = [-4, 4, 2];
 xDom = [-3, 4];
 yDom = [-4, 4];
 
+
+function isValidCoor(x, y){
+  if(x < xRange[1] - 1 && x > xRange[0] && y < yRange[1] - 1 && y > yRange[0]){
+    return true;
+  }
+  return false;
+}
 
 var main = {"clicks" : 0,
             "startTime":null,
@@ -170,16 +188,27 @@ d3.csv(main.dataFile, function(error, data){
 
   svg.append('text')
     .attr('x', width / 2)
-    .attr('y', 40)
+    .attr('y', 20)
     .style('text-anchor', 'middle')
 		.text('Average distance to all points: ')
 
   var lbfText = svg.append('text')
     .attr('x', (width/2) + 130)
-    .attr('y', 40)
+    .attr('y', 20)
     .style('text-anchor', 'start')
     .text('0')
 
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', 40)
+    .style('text-anchor', 'middle')
+		.text('Minimum distance: ')
+
+  var lbfTextMin = svg.append('text')
+    .attr('x', (width/2) + 130)
+    .attr('y', 40)
+    .style('text-anchor', 'start')
+    .text('0')
   svg.on("mousedown", mousedown)
      .on("mouseup", mouseup);
 
@@ -211,6 +240,8 @@ d3.csv(main.dataFile, function(error, data){
 
 	 var line_on = false;
 	 var line;
+   var minLine;
+   var minFit = Infinity;
 	 var x1, x2, y1, y2;
 
 	 function mousedown() {
@@ -251,7 +282,31 @@ d3.csv(main.dataFile, function(error, data){
 
 	 function mouseup() {
 			 svg.on("mousemove", null);
+       main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
+                     isValidCoor(x.invert(x1), y.invert(y1)) &&
+                     (avgDist != 0 || !isNaN(avgDist)))
 
+      if (avgDist <  minFit){
+        svg.selectAll("line.bestFitLineMin").remove();
+        line = svg.append("line")
+          .attr("class", "bestFitLineMin")
+            .attr("x1", x1)
+            .attr("y1", y1)
+            .attr("x2", x2)
+            .attr("y2", y2)
+            .attr("stroke", "orange")
+            .attr("stroke-width", 2);
+         minFit = avgDist;
+         lbfTextMin.text((Math.round(minFit* 100)/ 100));
+      }
+
+      if(main.valid){
+      		document.getElementById('warning').innerHTML = "";
+      		experimentr.release();
+      	} else {
+      		document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
+      		experimentr.hold();
+      }
 	 }
 
 });
@@ -259,10 +314,25 @@ d3.csv(main.dataFile, function(error, data){
 
 <script>
 	(function() {
+    // Updating question number
+    var saved = experimentr.data();
+    curr_question = saved["curr_question"];
+    var total_questions = saved["total_questions"]
+    progBar = document.getElementById('progressBar');
+    progBar.style.width = String(Math.round((curr_question / total_questions) * 100)) + '%'
+    progBar.innerHTML = String(Math.round((curr_question/ total_questions) * 100)) + '%'
+
 		experimentr.startTimer('task3-intro');
 		experimentr.release();
 		experimentr.onNext(function() {
 			experimentr.endTimer('task3-intro');
+      var storeInfo = {}
+      //Restarting data index and incrementing current question
+      storeInfo["data_idx"] = 0
+      storeInfo["curr_question"] = curr_question + 1
+      console.log("info", storeInfo);	//TODO remove debugging
+      experimentr.addData(storeInfo);
+
 		});
 	}());
 </script>

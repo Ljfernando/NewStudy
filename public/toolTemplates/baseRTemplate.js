@@ -366,7 +366,10 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 							var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
 
-							main.valid = function(){return isValidCoor(xUser, yUser)}
+							main.valid = (isValidCoor(denseBoundaries.tR.x, denseBoundaries.tR.y) &&
+														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y) &&
+														isValidCoor(denseBoundaries.tL.x, denseBoundaries.tL.y) &&
+														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y))
 							main.endTime = Date.now();
 							main.timeDiff = main.endTime - main.startTime
 							main.clicks += 1;
@@ -462,6 +465,9 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 						avgDist = getMeanDistance(a, 1, c);
 
+						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
+		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
+		                      (avgDist != 0 || !isNaN(avgDist)))
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
@@ -469,14 +475,13 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 						main.slope = a;
 						main.intercept = c;
 
-						if(avgDist == 0 || isNaN(avgDist)){
-							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
-							experimentr.hold();
-
-						} else {
+						if(main.valid){
 							document.getElementById('warning').innerHTML = "";
 							experimentr.release();
-						}
+						} else {
+							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
+							experimentr.hold();
+					}
 				}
 			}
 		});
