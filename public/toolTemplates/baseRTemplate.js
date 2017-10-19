@@ -315,7 +315,10 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 							return d.x < xMax && d.x > xMin && d.y < yMax && d.y > yMin
 						})
 
-						return newData.length;
+						var classData = newData.filter(function(d){
+							return d.class = main.class
+						})
+						return classData.length;
 					}
 
 		      function mousedown() {

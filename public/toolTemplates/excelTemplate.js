@@ -344,14 +344,17 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		      	denseBoundaries.tL.y = y.invert(yCoor - 25)
 		      }
 
-					//Computes the number of points within a given boundary box
+          //Computes the number of points within a given boundary box
 					function getDensity(xMax, xMin, yMax, yMin){
 
 						var newData = data.filter(function(d){
 							return d.x < xMax && d.x > xMin && d.y < yMax && d.y > yMin
 						})
 
-						return newData.length;
+						var classData = newData.filter(function(d){
+							return d.class = main.class
+						})
+						return classData.length;
 					}
 
 		      function mousedown() {
