@@ -11,12 +11,15 @@
 
 <h2 class="placeholder">Task 1 Training</h2>
 <p>
-  The next section will ask you to locate the centroid of a specified class.
-  The centroid of a class is defined as the average x and y coordinates of a given class.
+  This first section will ask you to find the center of a set of points. In this case,
+  the set of points will be indicated by what class it is (i.e., A, B, C or D).
+  The center of a class is defined as the average x and y coordinates for all those points.
 </p>
 <p class="center">
   <strong><div id = "question"></div></strong>
 </p>
+<p>For this training module, you have the option to view the correct answer by clicking the button below.
+  NOTE: You will not be able to view the correct answer in the actual task section.
 </div>
 
 <div id="answer">
@@ -85,7 +88,7 @@
               "class": getRandomClass(0, 4)
             }
 
-  var question = "<strong>Click the plot to activate the centroid indicator circle. Drag the circle to the centroid of class " + main.class + "</strong>"
+  var question = "<strong> Try it out below! Click the plot to activate your indicator circle. Drag the circle to the center of class " + main.class + "</strong>"
 
 	document.getElementById("question").innerHTML = question
 

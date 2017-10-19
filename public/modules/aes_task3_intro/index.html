@@ -11,17 +11,20 @@
 
 <h2 class="placeholder">Task 3 Training</h2>
 <p>
-  The next section will test your ability to identify the line of best fit in a multi-class scatterplot.
-	The line of best fit is a straight line that best represents the trend of a given scatterplot. The following questions
-	will ask you to identify this line for a particular class. A good line of best fit will minimize the perpendicular distance between
-	the line and all the points.
+  The next section will test your ability to identify a linear trend in the data.
+  To do this, you will draw a straight line through the points of a particular class.
+  The line should be drawn in between the points of the specified class, with a slope
+  that matches the trend of the points.
 </p>
 <p>
-
+  The image below shows a line drawn through the class D. Notice that it lies nicely in the
+  middle of the set of points and its slope matches the overall trend of class D.
+<img src="images/lbf_image.png" width = 400>
 <p class="center">
-  <strong>Try it out below! Press and drag on the plot below to draw your line of best fit for class A.</strong>
-  The minimum distance between your line and class A points is located above the plot.
-  The your best line will be shown in orange and the minimum distance is provided as text as well.
+  <strong>Try it out below! Press and drag on the plot below to draw your line for class A.</strong>
+  A good line will minimize the distance between itself and all the points.
+  The minimum distance between your line and class A is located above the plot.
+  The your best drawn line will be shown in orange and the minimum distance is provided as text as well.
 </p>
 </div>
 <div id="plot">
@@ -56,7 +59,7 @@ yDom = [-4, 4];
 
 
 function isValidCoor(x, y){
-  if(x < xRange[1] - 1 && x > xRange[0] && y < yRange[1] - 1 && y > yRange[0]){
+  if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
     return true;
   }
   return false;

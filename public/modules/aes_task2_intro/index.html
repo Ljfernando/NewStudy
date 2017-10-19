@@ -11,13 +11,14 @@
 
 <h2 class="placeholder">Task 2 Training</h2>
 <p>
-  The next section will test your ability to locate the densest region of the scatterplot.
-  The densest region is defined as the area of the scatterplot where most points lie.
+  The next section will test your ability to locate the region of the scatterplot that has the most points.
 </p>
 <p class="center">
-  <strong>Try it out below! Click the plot to activate the box and drag around to see the density of points in a given part of the plot.</strong>
-	The number of points for each class inside your box is located above the plot. The maximum number of points is also indicated in text as wel as
-	with a grey bounding box where the maximum was found.
+  <strong>Try it out below! Click the plot to activate the box and drag around to see the amount of points in a given part of the plot.</strong>
+	The number of points for each class inside your box is located above the plot. You can also see the maximum number of points you dragged
+	your box over. This region will be highlighted with a grey square.
+</p>
+<p>  NOTE: you will not be able to view the number of points in your box nor be given a max points square in the actual task section.
 </p>
 </div>
 <div id="plot">
@@ -26,6 +27,7 @@
 
 </div>
 <script>
+
 
 //Removes the text select cursor maintains regular cursor during mouse activity
 document.getElementById( "plot" ).onmousedown = function(event){
@@ -47,6 +49,13 @@ yRange = [1.5, 5, 0.5];
 xDom = [1.25, 5];
 yDom = [1.25, 5];
 
+
+function isValidCoor(x, y){
+  if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
+    return true;
+  }
+  return false;
+}
 
 var main = {"clicks" : 0,
             "startTime":null,

@@ -67,7 +67,7 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
   //Returns true if the user choice is within the give range of the chart and false otherwise
   function isValidCoor(x, y){
-    if(x < xRange[1] - 1 && x > xRange[0] && y < yRange[1] - 1 && y > yRange[0]){
+    if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
       return true;
     }
     return false;
