@@ -89,37 +89,37 @@
 				case "ggp":
 					loadCSS("toolCSS/ggplotStyle.css")
 					loadScript("toolTemplates/ggplotTemplate.js")
-					taskResponse = ggpPlot(taskNum, dataObj.file, dataObj.ggp.xRange, dataObj.ggp.yRange, dataObj.ggp.xDom, dataObj.ggp.yDom, dataObj.ggp.xFormat, dataObj.ggp.yFormat)
+					taskResponse = ggpPlot(taskNum, dataObj.file, dataObj.ggp.xRange, dataObj.ggp.yRange, dataObj.ggp.xDom, dataObj.ggp.yDom, dataObj.ggp.xFormat, dataObj.ggp.yFormat, dataObj.class)
 					break;
 
 		    case "exl":
 					loadCSS("toolCSS/excelStyle.css")
 					loadScript("toolTemplates/excelTemplate.js")
-					taskResponse = exlPlot(taskNum, dataObj.file, dataObj.exl.xRange, dataObj.exl.yRange, dataObj.exl.xDom, dataObj.exl.yDom, dataObj.exl.xFormat, dataObj.exl.yFormat)
+					taskResponse = exlPlot(taskNum, dataObj.file, dataObj.exl.xRange, dataObj.exl.yRange, dataObj.exl.xDom, dataObj.exl.yDom, dataObj.exl.xFormat, dataObj.exl.yFormat, dataObj.class)
 					break;
 
 				case "mpl":
 					loadCSS("toolCSS/matplotlibStyle.css")
 					loadScript("toolTemplates/matplotlibTemplate.js")
-					taskResponse = mplPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.mpl.yRange, dataObj.mpl.xDom, dataObj.mpl.yDom, dataObj.mpl.xFormat, dataObj.mpl.yFormat)
+					taskResponse = mplPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.mpl.yRange, dataObj.mpl.xDom, dataObj.mpl.yDom, dataObj.mpl.xFormat, dataObj.mpl.yFormat, dataObj.class)
 					break;
 
 				case "tbl":
 					loadCSS("toolCSS/tableauStyle.css")
 					loadScript("toolTemplates/tableauTemplate.js")
-					taskResponse = tblPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.tbl.yRange, dataObj.tbl.xDom, dataObj.tbl.yDom, dataObj.tbl.xFormat, dataObj.tbl.yFormat)
+					taskResponse = tblPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.tbl.yRange, dataObj.tbl.xDom, dataObj.tbl.yDom, dataObj.tbl.xFormat, dataObj.tbl.yFormat, dataObj.class)
 					break;
 
 				case "baseR":
 					loadCSS("toolCSS/baseRStyle.css")
 					loadScript("toolTemplates/baseRTemplate.js")
-					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat)
+					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat, dataObj.class)
 					break;
 
 		    default:
 					loadCSS("toolCSS/baseRStyle.css")
 					loadScript("toolTemplates/baseRTemplate.js")
-					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat)
+					taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat, dataObj.class)
 					break;
 		}
 

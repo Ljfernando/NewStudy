@@ -192,12 +192,6 @@ tr:nth-child(even) {
   .filter(function(d) { return this.name === 'baseR' ? this : null; })
   .on('change', function() { data.baseRFam = this.value; validate(); });
 
-  d3.select('#answer').on('click', function(){
-    d3.select('#answer').text("You can find the cell for variables x and w along the diagonal (near the upper-middle of the plot). The variable x is encoded using horizontal position and the variable w is encoded using vertical position.")
-	  .style("text-align", "left")
-	  .style("font-weight", "bold");
-  });
-
   function validate() {
 	  if(data.comfort && data.usage && data.exlFam && data.tblFam && data.mplFam && data.ggpFam && data.baseRFam) {
 	    experimentr.endTimer('aes_familiarity');

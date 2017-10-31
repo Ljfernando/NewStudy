@@ -9,13 +9,9 @@
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-<script language="javascript" type="text/javascript" src="toolTemplates/excelTemplate.js"></script>
 <script language="javascript" type="text/javascript" src="toolTemplates/baseRTemplate.js"></script>
-<script language="javascript" type="text/javascript" src="toolTemplates/ggplotTemplate.js"></script>
-<script language="javascript" type="text/javascript" src="toolTemplates/matplotlibTemplate.js"></script>
-<script language="javascript" type="text/javascript" src="toolTemplates/tableauTemplate.js"></script>
+<script language="javascript" type="text/javascript" src = "data/correlationData.js"></script>
 
-<script language="javascript" type="text/javascript" src = "data/allData.js"></script>
 
 <body></body>
 
@@ -37,9 +33,23 @@ function getRandomInteger(lower, upper) {
  * Generating two arrays that will be randomized to decide
  * which tools use which dataset
  */
-var allTools = ["baseR", "exl", "ggp", "mpl", "tbl"]
-var datasetNums = [1, 2, 3, 4, 5]
-var allDiff = ["es", "el", "hs", "hl"]
+var datasetNums = []
+var classes = []
+var classArr = ["A", "B", "C", "D"]
+var indexes = []
+count = 0
+	for(var i = 1; i <= 30; i++){
+		for(var j = 0; j < 4;j++){
+			datasetNums.push(i)
+			classes.push(classArr[j])
+			indexes.push(count)
+			count ++;
+		}
+	}
+
+console.log("data nums", datasetNums)
+console.log("classes", classes)
+console.log("indexes", indexes)
 // Randomizes the arrays above
 function randomizeArray(array){
 	for (var i = 0; i < array.length; i++) {
@@ -52,136 +62,155 @@ function randomizeArray(array){
 	return newArray
 }
 
-allTools = randomizeArray(allTools)
-datasetNums = randomizeArray(datasetNums)
+randIndex = randomizeArray(indexes)
 
-var questionOrder = [];
-for(i = 0; i < allDiff.length; i++){
-	for(j = 0; j < allTools.length; j ++){
-		questionOrder[(i*5) + j] = allTools[j] +","+ allDiff[i] + datasetNums[j];
-	}
+console.log("randInd", randIndex)
+newDataNums = []
+newClasses = []
+for (var i = 0; i < randIndex.length; i ++){
+	newDataNums.push(datasetNums[randIndex[i]])
+	newClasses.push(classes[randIndex[i]])
 }
 
-questionOrder = randomizeArray(questionOrder)
-console.log("questionOrder", questionOrder)
-
+console.log("newData", newDataNums)
+console.log("newClass", newClasses)
 
 var modules = [
-	// 'modules/aes_test',
+  // 'modules/aes_test',
   'modules/aes_consent/',
-  // 'modules/aes_demographics/',
-  // 'modules/aes_familiarity/',
-	// 'modules/aes_pref1',
-	'modules/aes_task1_intro',
-	'modules/aes_task1/',
-	'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	// 'modules/aes_task1/',
-	'modules/aes_task2_intro',
-	'modules/aes_task2/',
-	'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	// 'modules/aes_task2/',
-	'modules/aes_task3_intro',
-	'modules/aes_task3/',
-	'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
-	// 'modules/aes_task3/',
+  'modules/aes_task3_intro',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+	'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+	'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+	'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
+  'modules/aes_pre_corr',
 
   'modules/debrief/'
 ];
 
-//Randomize order of test modules, keeping consent as first and debrief as last
-var numModules = modules.length;
-var task1start = 5;
-var task1end = task1start + 19; // There are 20 questions per task
-var task2start = task1end + 2; // +2 to account for the intro to the next task
-var task2end = task2start + 19;
-var task3start = task2end + 2;
-var task3end = task3start + 19;
-
-var randomIndex;
-
-// //First randomizing task 1 questions
-// for (var i = task1start; i <= task1end; i++) {
-// 	randomIndex = getRandomInteger(i, task1end);
-// 	var temp = modules[i];
-// 	modules[i] = modules[randomIndex];
-// 	modules[randomIndex] = temp;
-// }
-//
-// //Randomizing task 2 questions
-// for (var i = task2start; i <= task2end; i++) {
-// 	randomIndex = getRandomInteger(i, task2end);
-// 	var temp = modules[i];
-// 	modules[i] = modules[randomIndex];
-// 	modules[randomIndex] = temp;
-// }
-//
-// //Randomizing task 3 questions
-// for (var i = task2start; i <= task2end; i++) {
-// 	randomIndex = getRandomInteger(i, task2end);
-// 	var temp = modules[i];
-// 	modules[i] = modules[randomIndex];
-// 	modules[randomIndex] = temp;
-// }
 
 
 console.log("randomized modules", modules)
 //Add randomized module order to session tracking;
 var storeInfo = {};
+storeInfo['datasetNums'] = newDataNums
+storeInfo['classes'] = newClasses
 storeInfo['module_order'] = modules.join().replace(/modules\//g,"");
-storeInfo['tool_order'] = allTools;
-storeInfo['data_order'] = datasetNums;
-storeInfo["question_order"] = questionOrder;
 storeInfo['curr_question'] = 0;
 storeInfo['total_questions'] = modules.length - 1;
 experimentr.addData(storeInfo);

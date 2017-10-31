@@ -78,7 +78,7 @@
 (function() {
   // Updating question number
   var saved = experimentr.data();
-  saved["curr_question"] = 1;
+  saved["curr_question"] += 1;
   progBar = document.getElementById('progressBar');
   progBar.style.width = String(Math.round((saved["curr_question"] / saved["total_questions"]) * 100)) + '%'
   progBar.innerHTML = String(Math.round((saved["curr_question"] / saved["total_questions"]) * 100)) + '%'

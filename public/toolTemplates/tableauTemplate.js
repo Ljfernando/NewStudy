@@ -38,7 +38,7 @@ function tblPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
               "dataFile": file,
               "class": getRandomClass(0, 4)
             }
-
+					
   var svg;
   //Change this for other tools
   var classColors = ["#4d78a5", "#f28e2b", "#e15759" , "#76b7b2"]
