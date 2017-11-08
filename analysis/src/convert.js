@@ -436,7 +436,7 @@ var j2c    = require('json2csv')
       "pre27D_intercept",
       "pre27D_slope",
       "pre28A_avgDist",
-      "pre28A_diff",
+      // "pre28A_diff", // For some reason this column isn't recorded...
       "pre28A_intercept",
       "pre28A_slope",
       "pre28B_avgDist",
