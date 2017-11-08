@@ -508,6 +508,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 				}
 
 				function mouseup() {
+            // validate();
 						svg.on("mousemove", null);
 						var a = (y2 - y1) / (x2 - x1)
 						var c = y1 - (a * (x1))
@@ -523,13 +524,22 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 						main.avgDist = avgDist;
 						main.slope = a;
 						main.intercept = c;
+            main.valid2 = null;
 
-						if(main.valid){
-							document.getElementById('warning').innerHTML = "";
-							experimentr.release();
-						} else {
-							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
-							experimentr.hold();
+        		d3.selectAll('input')
+        		.filter(function(d) { return this.name === 'diff' ? this : null; })
+        		.on('change', function() { main[tag +"_diff"] = this.value; validate(); });
+
+        		function validate() {
+        			if(main[tag+"_diff"] & main.valid) {
+                document.getElementById('warning').innerHTML = "";
+                experimentr.release();
+
+        			} else{
+                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit and difficulty of question.";
+  							experimentr.hold();
+        			}
+
 					}
 				}
 			}
@@ -585,18 +595,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 
 		experimentr.startTimer("aes_task3");
 
-		var data = {}
-		d3.selectAll('input')
-		.filter(function(d) { return this.name === 'diff' ? this : null; })
-		.on('change', function() { data[tag +"_diff"] = this.value; validate(); });
 
-		function validate() {
-			if(data[tag+"_diff"] != null) {
-				experimentr.release();
-			} else{
-				experimentr.hold();
-			}
-		}
 
 		experimentr.onNext(function() {
 			experimentr.endTimer("aes_task3");
