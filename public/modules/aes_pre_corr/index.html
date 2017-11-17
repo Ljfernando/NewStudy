@@ -3,8 +3,8 @@
 <link rel="stylesheet" type="text/css" href="toolCSS/baseRStyle.css" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <!-- <script language="javascript" type="text/javascript" src="toolTemplates/baseRTemplate.js"></script> -->
-<script language="javascript" type="text/javascript" src = "../../../data/correlationData.js"></script>
-<script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script>
+<!-- <script language="javascript" type="text/javascript" src = "../../../data/correlationData.js"></script> -->
+<!-- <script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script> -->
 
 <style>
 table {
@@ -49,11 +49,11 @@ tr:nth-child(even) {
 						<th>Very Difficult</th>
 					</tr>
 					<tr>
-						<td><input type="radio" id="diff" name="diff" value="1"></td>
-						<td><input type="radio" id="diff" name="diff" value="2"></td>
-					  <td><input type="radio" id="diff" name="diff" value="3"></td>
-						<td><input type="radio" id="diff" name="diff" value="4"></td>
-					  <td><input type="radio" id="diff" name="diff" value="5"></td>
+						<td><input type="radio" id="diff" name="difficulty" value="1"></td>
+						<td><input type="radio" id="diff" name="difficulty" value="2"></td>
+					  <td><input type="radio" id="diff" name="difficulty" value="3"></td>
+						<td><input type="radio" id="diff" name="difficulty" value="4"></td>
+					  <td><input type="radio" id="diff" name="difficulty" value="5"></td>
 					</tr>
 				</table>
 			</div>
@@ -217,7 +217,6 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 			.text(function(d){ return d; });
 
 	}
-// again scaleOrdinal
 
 	main.plotData = function(){
 		d3.csv(main.dataFile, function(error, data){
@@ -508,7 +507,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 				}
 
 				function mouseup() {
-            // validate();
+            validate();
 						svg.on("mousemove", null);
 						var a = (y2 - y1) / (x2 - x1)
 						var c = y1 - (a * (x1))
@@ -517,26 +516,27 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 
 						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
 		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
-		                      (avgDist != 0 || !isNaN(avgDist)))
+		                      (avgDist != 0 || !isNaN(avgDist)));
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
 						main.avgDist = avgDist;
 						main.slope = a;
 						main.intercept = c;
-            main.valid2 = null;
 
         		d3.selectAll('input')
-        		.filter(function(d) { return this.name === 'diff' ? this : null; })
-        		.on('change', function() { main[tag +"_diff"] = this.value; validate(); });
+          		.filter(function(d) { return this.name === 'difficulty' ? this : null; })
+          		.on('change', function() { main.diff = this.value; validate(); });
 
         		function validate() {
-        			if(main[tag+"_diff"] & main.valid) {
+              console.log("difficulty", main.diff);
+              console.log("valid", main.valid)
+        			if(main.diff != null & main.valid) {
                 document.getElementById('warning').innerHTML = "";
                 experimentr.release();
 
         			} else{
-                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit and difficulty of question.";
+                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line and indicate the difficulty.";
   							experimentr.hold();
         			}
 
@@ -581,7 +581,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 		tag = "pre" + curr_num  + curr_class
 		console.log("tag", tag)
 
-		taskResponse = baseRPlot(taskNum, dataObj.file, dataObj.xRange, dataObj.yRange, dataObj.xDom, dataObj.yDom, dataObj.xFormat, dataObj.yFormat, curr_class)
+		taskResponse = baseRPlot(taskNum, "data/rescaled_150/" + curr_num + ".csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false, curr_class)
 
 		taskResponse.createBaseLayer();
 		taskResponse.createLegend();
@@ -607,7 +607,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
       storeInfo[tag+"_avgDist"] = taskResponse.avgDist;
       storeInfo[tag+"_slope"] = taskResponse.slope;
       storeInfo[tag+"_intercept"] = taskResponse.intercept;
-      storeInfo[tag+"_diff"] = data[tag+"_diff"];
+      storeInfo[tag+"_diff"] = taskResponse.diff;
 			storeInfo["data_idx"] = curr_data + 1
 			storeInfo["curr_question"] = curr_question + 1
 

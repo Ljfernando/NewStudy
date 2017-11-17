@@ -7,8 +7,8 @@
 	<!-- <link rel="stylesheet" type="text/css" href="../toolCSS/ggplotStyle.css" /> -->
 	<!-- <link rel="stylesheet" type="text/css" href="../toolCSS/excelStyle.css" /> -->
 	<!-- <link rel="stylesheet" type="text/css" href="../toolCSS/matplotlibStyle.css" /> -->
-	<link rel="stylesheet" type="text/css" href="../toolCSS/tableauStyle.css" />
-	<!-- <link rel="stylesheet" type="text/css" href="../toolCSS/baseRStyle.css" /> -->
+	<!-- <link rel="stylesheet" type="text/css" href="../toolCSS/tableauStyle.css" /> -->
+	<link rel="stylesheet" type="text/css" href="../toolCSS/baseRStyle.css" />
 
 
 	<script src = "../toolTemplates/ggplotTemplate.js"></script>
@@ -33,15 +33,15 @@
 
 
 console.log("hello")
-dataObj = allData["cor_es3"]
+// dataObj = correlation["cor_es3"]
 taskNum = 3
-console.log("file", dataObj.file)
+// console.log("file", dataObj.file)
 
-// var chart = ggpPlot(taskNum, dataObj.file, dataObj.ggp.xRange, dataObj.ggp.yRange, dataObj.ggp.xDom, dataObj.ggp.yDom, dataObj.ggp.xFormat, dataObj.ggp.yFormat);
-// var chart = exlPlot(taskNum, dataObj.file, dataObj.exl.xRange, dataObj.exl.yRange, dataObj.exl.xDom, dataObj.exl.yDom, dataObj.exl.xFormat, dataObj.exl.yFormat);
-// var chart = mplPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.mpl.yRange, dataObj.mpl.xDom, dataObj.mpl.yDom, dataObj.mpl.xFormat, dataObj.mpl.yFormat);
-var chart = tblPlot(taskNum, dataObj.file, dataObj.tbl.xRange, dataObj.tbl.yRange, dataObj.tbl.xDom, dataObj.tbl.yDom, dataObj.tbl.xFormat, dataObj.tbl.yFormat);
-// var chart = baseRPlot(taskNum, dataObj.file, dataObj.baseR.xRange, dataObj.baseR.yRange, dataObj.baseR.xDom, dataObj.baseR.yDom, dataObj.baseR.xFormat, dataObj.baseR.yFormat);
+// var chart = ggpPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
+// var chart = exlPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 1], [-4, 5, 1], [-5, 5], [-5, 5], false, false);
+// var chart = mplPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 1], [-4, 5, 1], [-5, 5], [-5, 5], false, false);
+// var chart = tblPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
+var chart = baseRPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
 
 
 chart.createBaseLayer();
