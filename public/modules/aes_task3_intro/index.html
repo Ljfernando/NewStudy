@@ -24,7 +24,7 @@
   <strong>Try it out below! Press and drag on the plot below to draw your line for class A.</strong>
   A good line will minimize the distance between itself and all the points.
   The minimum distance between your line and class A is located above the plot.
-  The your best drawn line will be shown in orange and the minimum distance is provided as text as well.
+  Then your best drawn line will be shown in orange and the minimum distance is provided as text as well.
 </p>
 </div>
 <div id="plot">
@@ -77,8 +77,6 @@ var svg = d3.select('#plot')
   .attr('width', width + margin.left + margin.right)
   .attr('height', height + margin.top + margin.bottom)
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-  // .on("mousedown", mousedown)
-  // .on("mouseup", mouseup);
 
 var x = d3.scaleLinear()
   .range([margin.left, width]);

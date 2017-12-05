@@ -1,14 +1,13 @@
 /**
-Qualities of Excel Multi-class Scatterplots
-- Gridlines at each integer
-- Bolder lines at x=0 and y=0
-- Outer frame border
-- Axes tick labels are below y=0 and to the left of x=0
+Qualities of ggplot2 Multi-class Scatterplots
+- Weird y and x limits
+- Grey background
+- White gridlines with bolder lines at major ticks
 **/
 
 //Gets a random integer between lower and upper limits and returns the class at the random integer index.
 function getRandomClass(lower, upper) {
-	//console.assert(arguments.length === 2, "getRandomInteger() requires lower and upper parameters.");
+	console.assert(arguments.length === 2, "getRandomInteger() requires lower and upper parameters.");
   var randInt = Math.floor(Math.random() * (upper - lower)) + lower;
 
   var classes = ["A", "B", "C", "D"]
@@ -28,8 +27,7 @@ function getClassCentroid(randClass, data){
   return centroid;
 }
 
-//TODO Fix data variable in interactivity
-function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
+function ggpPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   var margin = {top: 50, right: 50, bottom: 50, left:50};
   var width = 600 - margin.left - margin.right;
   var height = 500 - margin.top - margin.bottom;
@@ -42,12 +40,21 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
             }
 
   var svg;
-  //Change this for other tools
-  var classColors = ["#5e9cd3", "#eb7d3c", "#a5a5a5" , "#fdbf2d"]
 
-	// Creating color scale for classes
+  //Change this for other tools
+  var classColors = ["#F8766D", "#7CAE00", "#00BFC4" , "#C77CFF"]
+
   var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
   .range(classColors);;
+
+	//Returns true if the user choice is within the give range of the chart and false otherwise
+	function isValidCoor(x, y){
+		if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
+			return true;
+		}
+		return false;
+	}
+
 
 
   var xGridLength = d3.range(xRange[0], xRange[1], xRange[2]).length;
@@ -63,28 +70,25 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   x.domain(xDom);
   y.domain(yDom);
 
-
-
-  //Returns true if the user choice is within the give range of the chart and false otherwise
-  function isValidCoor(x, y){
-    if(x < xDom[1] && x > xDom[0] && y < yDom[1] && y > yDom[0]){
-      return true;
-    }
-    return false;
-  }
-  /**HELPER FUNCTIONS FOR GRIDLINES**/
-
   // gridlines in x axis function
   function make_xMajor_gridlines() {
       return d3.axisBottom(x)
           .ticks(xGridLength)
   }
 
+  function make_xMinor_gridlines(){
+  	return d3.axisBottom(x)
+  				.ticks(xGridLength*2)
+  }
 
   // gridlines in y axis function
   function make_yMajor_gridlines() {
       return d3.axisLeft(y)
           .ticks(yGridLength)
+  }
+  function make_yMinor_gridlines() {
+      return d3.axisLeft(y)
+          .ticks(yGridLength * 2)
   }
 
   main.createBaseLayer = function(){
@@ -93,124 +97,130 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
     	.attr('width', width + margin.left + margin.right)
     	.attr('height', height + margin.top + margin.bottom)
     	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-    	// .on("mousedown", mousedown)
-    	// .on("mouseup", mouseup);
 
-
-
-
-    // Creating outer frame border
+    //create grey background
     svg.append('rect')
-    	.attr('class', 'frameBorder')
-    	.attr('width', width + margin.left)
-    	.attr('height', height)
-    	.attr('transform', 'translate(' + margin.left/2 + ',' + margin.top/2 + ')')
+    	.attr('class', 'ggpBackground')
+    	.attr('width', width - margin.right)
+    	.attr('height', height - margin.bottom)
+    	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+    	.style('fill', "#EBEDED")
 
-    //Creating Left and Right frame borders
-    //Major Gridlines already create Top and Bottom Frame borders
-
-    //Right verticle Line
-    svg.append('line')
-    	.attr('class', 'border')
-    	.attr('x1', width + 0.5)
-    	.attr('x2', width + 0.5)
-    	.attr('y1', margin.top)
-    	.attr('y2', height + 1)
-
-    //Left verticle line
-    svg.append('line')
-    	.attr('class', 'border')
-    	.attr('x1', margin.left)
-    	.attr('x2', margin.left)
-    	.attr('y1', margin.top)
-    	.attr('y2', height + 1)
-
-    // adding X gridlines
-  	svg.append("g")
-        .attr("class", "exlMajorGrid")
-        .attr("transform", "translate(0," + height + ")")
-        .call(make_xMajor_gridlines()
-            .tickSize(-(height - margin.top))
-            .tickFormat("")
-        )
-
-
-    // add the Y gridlines
-    svg.append("g")
-        .attr("class", "exlMajorGrid")
-  			.attr("transform", "translate("+margin.right+",0)")
-        .call(make_yMajor_gridlines()
-            .tickSize(-(width - margin.right))
-            .tickFormat("")
-        )
 
     var xAxis = d3.axisBottom()
     	.scale(x)
     	.tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
-      .tickSizeOuter(0); //removes the outer ticks
 
-		if(xFormat){
-			xAxis.tickFormat(d3.format(".0f"))
-		}
-    var yAxis = d3.axisLeft()
-    	.scale(y)
-    	.tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
-      .tickSizeOuter(0); // removes the outer ticks
-
-		if(yFormat){
-			yAxis.tickFormat(d3.format(".0f"))
-		}
-
-    //Excel ticks are labeled at x=0 and y = 0
-    // hence y(0) and x(0) are the translation coordinates
-  	svg.append('g')
-  		.attr('transform', 'translate(0,' + y(0)+ ')')
-  		.attr('class', 'x axis')
-  		.call(xAxis);
-
-  	svg.append('g')
-  		.attr('transform', 'translate(' + x(0) + ',0)')
-  		.attr('class', 'y axis')
-  		.call(yAxis);
-
+    if(xFormat){
+      xAxis.tickFormat(d3.format(".1f"));
     }
 
-    main.createLegend = function(){
-      var legend = svg.selectAll('legend')
-        .data(color.domain())
-        .enter()
-        .append('g')
-          .attr('class', 'legend')
-          .attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
+    var yAxis = d3.axisLeft()
+    	.scale(y)
+    	.tickValues(d3.range(yRange[0], yRange[1], yRange[2]));
 
-      legend.append('circle')
-        .attr('cx', width - 8)
-        .attr('cy', 8)
-        .attr('r', 4)
-				.style('fill', color);
+    if(yFormat){
+      yAxis.tickFormat(d3.format(".1f"));
+    }
+    // adding X gridlines
+    svg.append("g")
+        .attr("class", "ggpMajorGrid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_xMajor_gridlines()
+            .tickSize(-(height - margin.top))
+            .tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
+            .tickFormat("")
+        )
+    svg.append("g")
+        .attr("class", "ggpMinorGrid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_xMinor_gridlines()
+            .tickSize(-(height - margin.top))
+            .tickFormat("")
+        )
 
-      // add text to the legend elements.
-      // rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
-      legend.append('text')
-        .attr('x', width + 10)
-        .attr('y', 8)
-        .attr('dy', '.35em')
-        .style('text-anchor', 'end')
-        .text(function(d){ return d; });
+    // add the Y gridlines
+    svg.append("g")
+        .attr("class", "ggpMajorGrid")
+        .attr("transform", "translate("+margin.right+",0)")
+        .call(make_yMajor_gridlines()
+            .tickSize(-(width - margin.right))
+            .tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
+
+            .tickFormat("")
+        )
+
+    svg.append("g")
+        .attr("class", "ggpMinorGrid")
+        .attr("transform", "translate("+margin.right+",0)")
+        .call(make_yMinor_gridlines()
+            .tickSize(-(width - margin.right))
+            .tickFormat("")
+        )
+
+
+    svg.append('g')
+      .attr('transform', 'translate(0,' + height+ ')')
+      .attr('class', 'x axis')
+      .call(xAxis);
+
+    svg.append('g')
+      .attr('transform', 'translate(' + margin.left + ',0)')
+      .attr('class', 'y axis')
+      .call(yAxis);
+
+    svg.append('text')
+  		.attr('x', 5)
+  		.attr('y', height/2)
+  		.attr('class', 'label')
+  		.text('y');
+
+  	svg.append('text')
+  		.attr('x', width/2)
+  		.attr('y', height + 40)
+  		.attr('text-anchor', 'end')
+  		.attr('class', 'label')
+  		.text('x');
 
   }
 
+  main.createLegend = function(){
 
+    var legend = svg.selectAll('legend')
+  		.data(color.domain())
+  		.enter()
+  		.append('g')
+  			.attr('class', 'legend')
+  			.attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
+
+		legend.append('rect')
+  		.attr('x', width - 17)
+  		.attr('width', 17)
+  		.attr('height', 17)
+  		.style('fill', '#EBEDED');
+
+		legend.append('circle')
+			.attr('cx', width - 8.5)
+			.attr('cy', 8)
+			.attr('r', 4)
+			.style('fill', color)
+
+  	// add text to the legend elements.
+  	// rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
+  	legend.append('text')
+  		.attr('x', width + 15)
+  		.attr('y', 8)
+  		.attr('dy', '.35em')
+  		.style('text-anchor', 'end')
+  		.text(function(d){ return d; });
+  }
 
   main.plotData = function(){
-
     d3.csv(main.dataFile, function(error, data){
     	data.forEach(function(d){
     		 d.x = +d.x;
     		 d.y = +d.y;
     	});
-
-
 
 
     	var bubble = svg.selectAll('.bubble')
@@ -219,13 +229,14 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
     		.attr('class', 'bubble')
     		.attr('cx', function(d){return x(d.x);})
     		.attr('cy', function(d){ return y(d.y); })
-    		.attr('r', 2.5)
-    		.style('stroke', function(d){ return color(d.class)})
+    		.attr('r', 3)
+    		.style('stroke', function(d){ return color(d.class); })
     		.style('fill', function(d){ return color(d.class)});
 
 
 
-				/* CENTROID LOCATOR */
+
+        /* CENTROID LOCATOR */
 		    if(taskNum == 1){
 
 					// grabbing the centroid coordinates
@@ -257,7 +268,7 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		            .attr("cy", m[1])
 		            .attr("r", 8)
 		            .style("fill", 'grey')
-                .style("stroke",'black')
+								.style("stroke",'black')
 								.style("stroke-width", 1)
 		            .style('opacity', .7);
 
@@ -294,14 +305,13 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		          main.xPErr = Math.abs(main.xErr / main.xAvg)
 		          main.yPErr = Math.abs(main.yErr / main.yAvg)
 
-              if(main.valid){
-                document.getElementById('warning').innerHTML = "";
-                experimentr.release();
-              } else {
-                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
-                experimentr.hold();
-              }
-
+							if(main.valid){
+								document.getElementById('warning').innerHTML = "";
+								experimentr.release();
+							} else {
+								document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
+								experimentr.hold();
+							}
 		          //console.log("main object", main)
 
 		      }
@@ -344,7 +354,7 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		      	denseBoundaries.tL.y = y.invert(yCoor - 25)
 		      }
 
-          //Computes the number of points within a given boundary box
+					//Computes the number of points within a given boundary box
 					function getDensity(xMax, xMin, yMax, yMin){
 
 						var newData = data.filter(function(d){
@@ -405,7 +415,7 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 							var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
 
-              main.valid = (isValidCoor(denseBoundaries.tR.x, denseBoundaries.tR.y) &&
+							main.valid = (isValidCoor(denseBoundaries.tR.x, denseBoundaries.tR.y) &&
 														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y) &&
 														isValidCoor(denseBoundaries.tL.x, denseBoundaries.tL.y) &&
 														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y))
@@ -417,113 +427,112 @@ function exlPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 							main.xMin = denseBoundaries.tL.x;
 							main.yMax = denseBoundaries.tR.y;
 							main.yMin = denseBoundaries.bR.y;
-
-              if(main.valid){
-                document.getElementById('warning').innerHTML = "";
-                experimentr.release();
-              } else {
-                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
-                experimentr.hold();
-              }
+							if(main.valid){
+								document.getElementById('warning').innerHTML = "";
+								experimentr.release();
+							} else {
+								document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
+								experimentr.hold();
+							}
 		      }
 		    }
 
-  	    /* LINE OF BEST FIT */
-  			else{
+		    /* LINE OF BEST FIT */
+				else{
 
-  				svg.on("mousedown", mousedown)
-             .on("mouseup", mouseup)
-          var line_on = false;
-          var line;
-          var x1, x2, y1, y2;
+					svg.on("mousedown", mousedown)
+	           .on("mouseup", mouseup)
+	        var line_on = false;
+	        var line;
+	        var x1, x2, y1, y2;
 
-  				function calculateDistance(a, b, c, x, y){
-  					var numerator = Math.abs((a*x) - (b*y) + c)
-  					var denominator = Math.sqrt((a*a) + (b*b))
+					function calculateDistance(a, b, c, x, y){
+						var numerator = Math.abs((a*x) - (b*y) + c)
+						var denominator = Math.sqrt((a*a) + (b*b))
 
-  					return numerator/denominator
-  				}
+						return numerator/denominator
+					}
 
-  				function getMeanDistance(a, b, c){
+					function getMeanDistance(a, b, c){
 
-  					var newData = data.filter(function(d){
-  						return d.class == main.class
-  					})
-
-
-  					var dataLength = newData.length
-  					var totalDist = 0
-
-  					newData.forEach(function(each){
-  						each.dist = calculateDistance(a, b, c, x(each.x), y(each.y))
-  						totalDist += each.dist
-  					})
+						var newData = data.filter(function(d){
+							return d.class == main.class
+						})
 
 
-  					return totalDist/dataLength
-  				}
+						var dataLength = newData.length
+						var totalDist = 0
+
+						newData.forEach(function(each){
+							each.dist = calculateDistance(a, b, c, x(each.x), y(each.y))
+							totalDist += each.dist
+						})
 
 
-  				function mousedown() {
-  					if(line_on){
-  						svg.selectAll("line.bestFitLine").remove();
-  					}
+						return totalDist/dataLength
+					}
 
-  					if(main.clicks == 0){
-  						main.startTime = Date.now()
-  					}
 
-  					var m = d3.mouse(this);
-  					line = svg.append("line")
-  						.attr("class", "bestFitLine")
-  							.attr("x1", m[0])
-  							.attr("y1", m[1])
-  							.attr("x2", m[0])
-  							.attr("y2", m[1]);
+					function mousedown() {
+						if(line_on){
+							svg.selectAll("line.bestFitLine").remove();
+						}
 
-  						x1 = m[0]
-  						y1 = m[1]
+						if(main.clicks == 0){
+							main.startTime = Date.now()
+						}
 
-  						line_on = true;
-  						svg.on("mousemove", mousemove);
-  				}
+						var m = d3.mouse(this);
+						line = svg.append("line")
+							.attr("class", "bestFitLine")
+								.attr("x1", m[0])
+								.attr("y1", m[1])
+								.attr("x2", m[0])
+								.attr("y2", m[1]);
 
-  				function mousemove() {
-  						var m = d3.mouse(this);
-  						line.attr("x2", m[0])
-  								.attr("y2", m[1]);
+							x1 = m[0]
+							y1 = m[1]
 
-  						x2 = m[0]
-  						y2 = m[1]
-  				}
+							line_on = true;
+							svg.on("mousemove", mousemove);
+					}
 
-  				function mouseup() {
-  						svg.on("mousemove", null);
-              var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
-  						var c = y.invert(y1) - (a * (x.invert(x1)))
+					function mousemove() {
+							var m = d3.mouse(this);
+							line.attr("x2", m[0])
+									.attr("y2", m[1]);
 
-  						// avgDist = getMeanDistance(a, 1, c);
+							x2 = m[0]
+							y2 = m[1]
+					}
 
-              main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
-                            isValidCoor(x.invert(x1), y.invert(y1)) &&
-                            (a != 0 || !isNaN(a)))
-  						main.endTime = Date.now();
-  						main.timeDiff = main.endTime - main.startTime
-  						main.clicks += 1;
-  						// main.avgDist = avgDist;
-  						main.slope = a;
-  						main.intercept = c;
+					function mouseup() {
+							svg.on("mousemove", null);
+							var a = (y2 - y1) / (x2 - x1)
+							var c = y1 - (a * (x1))
 
-  						if(main.valid){
-  							document.getElementById('warning').innerHTML = "";
-  							experimentr.release();
-  						} else {
-  							document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
-  							experimentr.hold();
-  					}
-  				}
-  			}
-  	});
-  }
-  return main;
+							avgDist = getMeanDistance(a, 1, c);
+
+							main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
+			                      isValidCoor(x.invert(x1), y.invert(y1)) &&
+			                      (avgDist != 0 || !isNaN(avgDist)))
+							main.endTime = Date.now();
+							main.timeDiff = main.endTime - main.startTime
+							main.clicks += 1;
+							main.avgDist = avgDist;
+							main.slope = a;
+							main.intercept = c;
+
+							if(main.valid){
+								document.getElementById('warning').innerHTML = "";
+								experimentr.release();
+							} else {
+								document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
+								experimentr.hold();
+						}
+					}
+				}
+		});
+	}
+	return main;
 }

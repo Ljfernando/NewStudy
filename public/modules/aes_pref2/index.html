@@ -16,10 +16,6 @@ td, th {
     text-align: center;
     padding: 8px;
 }
-/*
-tr:nth-child(even) {
-    background-color: #dddddd;
-}*/
 
 
 </style>
@@ -84,41 +80,33 @@ tr:nth-child(even) {
 
     </table>
   </div>
-
-  <!--OLD VERSION-->
-  <!-- <table>
-    <tr>
-      <td><img src="../../images/scatterplots/baseR1.png" height=250px width=250px></td>
-      <td><img src="../../images/scatterplots/ggplot1.png" height=250px width=250px></td>
-      <td><img src="../../images/scatterplots/exl1.png" height=250px width=250px></td>
-    </tr>
-
-    <tr>
-      <td><input type="number" name="baseR" min=1 max=5 value=0></td>
-      <td><input type="number" name="ggp" min=1 max=5 value=0></td>
-      <td><input type="number" name="exl" min=1 max=5 value=0></td>
-    </tr>
-    <tr>
-      <td><img src="../../images/scatterplots/mpl1.png" height=250px width=250px></td>
-      <td><img src="../../images/scatterplots/tbl1.png" height=250px width=250px></td>
-    </tr>
-    <tr>
-      <td><input type="number" name="mpl" min=1 max=5 value=0></td>
-      <td><input type="number" name="tbl" min=1 max=5 value=0></td>
-    </tr>
-  </table> -->
+  <div>
+    <br>
+    <h3> User Comments </h3>
+    <p>If you feel as if your personal preference changed after completing all the tasks, please indicate why. For example,
+      do you prefer the class colors of a certain visualization? Is it easier to perform this task on a certain tool? Leave comments in the box below.
+    </p>
+    <textarea name="textarea" rows="10" cols="50">Enter comments here</textarea>
+    <br>
+    <button id="submitComments" disabled="true" type="button">Submit</button>
+    <br>
+    <div id="submitFeedback"></div>
+  </div>
     <p>
       The <strong>next</strong> button will be unclickable until all tools have a single unique ranking.
     </p>
 </div>
 <script>
 
-// TODO
-// change data.pref... to have a 2
 (function() {
   var data = {};
 
-  //experimentr.startTimer('demo');
+  var comments = d3.select('#pref2').select('textarea')
+    .on('keypress', function() { d3.select('#submitComments').attr('disabled', null); })
+    .on('blur', function() { d3.select('#submitComments').attr('disabled', null); });
+
+  d3.select('#submitComments')
+    .on('click', function () { data.pref_comments = comments.property('value'); validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'c1' ? this : null; })
@@ -143,12 +131,16 @@ tr:nth-child(even) {
 
   function validate() {
 
-    if(data.pref2Rank1 && data.pref2Rank2 && data.pref2Rank3 && data.pref2Rank4 && data.pref2Rank5){
+
+    if(data.pref2Rank1 && data.pref2Rank2 && data.pref2Rank3 && data.pref2Rank4 && data.pref2Rank5 && data.pref_comments){
       var userRankings = [data.pref2Rank1,
                           data.pref2Rank2,
                           data.pref2Rank3,
                           data.pref2Rank4,
                           data.pref2Rank5]
+
+      d3.select('#submitComments').attr('disabled', 'true');
+      d3.select('#submitFeedback').text('Submit Successful');
 
       var allTools = "baseR,exl,ggp,mpl,tbl"
 

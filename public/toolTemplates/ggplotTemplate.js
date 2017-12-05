@@ -508,18 +508,18 @@ function ggpPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 					function mouseup() {
 							svg.on("mousemove", null);
-							var a = (y2 - y1) / (x2 - x1)
-							var c = y1 - (a * (x1))
+							var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
+							var c = y.invert(y1) - (a * (x.invert(x1)))
 
-							avgDist = getMeanDistance(a, 1, c);
+							// avgDist = getMeanDistance(a, 1, c);
 
 							main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
 			                      isValidCoor(x.invert(x1), y.invert(y1)) &&
-			                      (avgDist != 0 || !isNaN(avgDist)))
+			                      (a != 0 || !isNaN(a)))
 							main.endTime = Date.now();
 							main.timeDiff = main.endTime - main.startTime
 							main.clicks += 1;
-							main.avgDist = avgDist;
+							// main.avgDist = avgDist;
 							main.slope = a;
 							main.intercept = c;
 

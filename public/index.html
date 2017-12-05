@@ -10,13 +10,13 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
 <!-- <script language="javascript" type="text/javascript" src="toolTemplates/baseRTemplate.js"></script> -->
-<script src = "toolTemplates/ggplotTemplate.js"></script>
+<!-- <script src = "toolTemplates/ggplotTemplate.js"></script>
 <script src = "toolTemplates/excelTemplate.js"></script>
 <script src = "toolTemplates/matplotlibTemplate.js"></script>
 <script src = "toolTemplates/tableauTemplate.js"></script>
-<script src = "toolTemplates/baseRTemplate.js"></script>
+<script src = "toolTemplates/baseRTemplate.js"></script> -->
 
-<script language="javascript" type="text/javascript" src = "data/correlationData.js"></script>
+<!-- <script language="javascript" type="text/javascript" src = "data/correlationData.js"></script> -->
 
 
 <body></body>
@@ -53,9 +53,9 @@ count = 0
 		}
 	}
 
-console.log("data nums", datasetNums)
-console.log("classes", classes)
-console.log("indexes", indexes)
+// console.log("data nums", datasetNums)
+// console.log("classes", classes)
+// console.log("indexes", indexes)
 // Randomizes the arrays above
 function randomizeArray(array){
 	for (var i = 0; i < array.length; i++) {
@@ -70,7 +70,7 @@ function randomizeArray(array){
 
 randIndex = randomizeArray(indexes)
 
-console.log("randInd", randIndex)
+// console.log("randInd", randIndex)
 newDataNums = []
 newClasses = []
 for (var i = 0; i < randIndex.length; i ++){
@@ -78,8 +78,8 @@ for (var i = 0; i < randIndex.length; i ++){
 	newClasses.push(classes[randIndex[i]])
 }
 
-console.log("newData", newDataNums)
-console.log("newClass", newClasses)
+// console.log("newData", newDataNums)
+// console.log("newClass", newClasses)
 
 var modules = [
   // 'modules/aes_test',
@@ -145,14 +145,12 @@ var modules = [
 	'modules/aes_pre_corr',
 	'modules/aes_pre_corr',
 	'modules/aes_pre_corr',
-
-
   'modules/debrief/'
 ];
 
 
 
-console.log("randomized modules", modules)
+// console.log("randomized modules", modules)
 //Add randomized module order to session tracking;
 var storeInfo = {};
 storeInfo['datasetNums'] = newDataNums

@@ -17,7 +17,7 @@
 	<script src = "../toolTemplates/tableauTemplate.js"></script>
 	<script src = "../toolTemplates/baseRTemplate.js"></script>
 
-	<script src = "../../data/allData.js"></script>
+	<!-- <script src = "../../data/allData.js"></script> -->
 	<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
@@ -33,15 +33,15 @@
 
 
 console.log("hello")
-// dataObj = correlation["cor_es3"]
+// dataObj = correlationData["1"]
 taskNum = 3
 // console.log("file", dataObj.file)
-
+testfile = "data/rescaled_150/1.csv"
 // var chart = ggpPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
 // var chart = exlPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 1], [-4, 5, 1], [-5, 5], [-5, 5], false, false);
 // var chart = mplPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 1], [-4, 5, 1], [-5, 5], [-5, 5], false, false);
 // var chart = tblPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
-var chart = baseRPlot(taskNum, "data/rescaled_150/1.csv", [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
+var chart = baseRPlot(taskNum, testfile, [-4, 5, 2], [-4, 5, 2], [-5, 5], [-5, 5], false, false);
 
 
 chart.createBaseLayer();

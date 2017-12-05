@@ -1,8 +1,8 @@
 /**
-Qualities of Matplotlib Multi-class Scatterplots
-- Integer gridlines
-- Circles have a small grey stroke
-- No tick lines
+Qualities of Tableau Multi-class Scatterplots
+- Gridlines at each integer
+- Dashed lines at x=0 and y=0
+- Large unfilled circles
 **/
 
 //Gets a random integer between lower and upper limits and returns the class at the random integer index.
@@ -27,8 +27,7 @@ function getClassCentroid(randClass, data){
   return centroid;
 }
 
-function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
-
+function tblPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   var margin = {top: 50, right: 50, bottom: 50, left:50};
   var width = 600 - margin.left - margin.right;
   var height = 500 - margin.top - margin.bottom;
@@ -39,13 +38,13 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
               "dataFile": file,
               "class": getRandomClass(0, 4)
             }
-
+					
   var svg;
   //Change this for other tools
-  var classColors = ["#0b24fb", "#0f7f12", "#fc0d1b" , "#20b7b5"]
+  var classColors = ["#4d78a5", "#f28e2b", "#e15759" , "#76b7b2"]
 
   var color = d3.scaleOrdinal().domain(["A", "B", "C", "D"])
-  .range(classColors);;
+  .range(classColors);
 
 	//Returns true if the user choice is within the give range of the chart and false otherwise
 	function isValidCoor(x, y){
@@ -55,18 +54,19 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 		return false;
 	}
 
+
   var xGridLength = d3.range(xRange[0], xRange[1], xRange[2]).length;
   var yGridLength = d3.range(yRange[0], yRange[1], yRange[2]).length;
 
   // gridlines in x axis function
-  function make_xMajor_gridlines_mpl() {
+  function make_xMajor_gridlines() {
       return d3.axisBottom(x)
           .ticks(xGridLength)
   }
 
 
   // gridlines in y axis function
-  function make_yMajor_gridlines_mpl() {
+  function make_yMajor_gridlines() {
       return d3.axisLeft(y)
           .ticks(yGridLength)
   }
@@ -85,17 +85,19 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   var xAxis = d3.axisBottom()
   	.scale(x)
   	.tickValues(d3.range(xRange[0], xRange[1], xRange[2]))
+    .tickSizeOuter(0);
 
   if(xFormat){
-  	xAxis.tickFormat(d3.format(".0f"));
+    xAxis.tickFormat(d3.format(".0f"))
   }
 
   var yAxis = d3.axisLeft()
   	.scale(y)
   	.tickValues(d3.range(yRange[0], yRange[1], yRange[2]))
+    .tickSizeOuter(0);
 
   if(yFormat){
-    yAxis.tickFormat(d3.format(".0f"));
+    yAxis.tickFormat(d3.format(".0f"))
   }
 
   main.createBaseLayer = function(){
@@ -104,30 +106,36 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
     	.attr('width', width + margin.left + margin.right)
     	.attr('height', height + margin.top + margin.bottom)
     	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-    	// .on("mousedown", mousedown)
-    	// .on("mouseup", mouseup);
 
     // adding X gridlines
-  	svg.append("g")
-        .attr("class", "mplMajorGrid")
+    svg.append("g")
+        .attr("class", "tblMajorGrid")
         .attr("transform", "translate(0," + height + ")")
-        .call(make_xMajor_gridlines_mpl()
+        .call(make_xMajor_gridlines()
             .tickSize(-(height - margin.top))
-            .tickFormat("")
-        )
-
+            .tickFormat(""))
+            .selectAll(".tick line").filter(function(t){ // Accesses x = 0 line
+              return(t == 0)
+            }).attr("stroke", "#d2d2d2")
+              .attr("stroke-dasharray", "2,1")
+              .style("stroke-width", "1.5px")
 
     // add the Y gridlines
     svg.append("g")
-        .attr("class", "mplMajorGrid")
-  			.attr("transform", "translate("+margin.left+",0)")
-        .call(make_yMajor_gridlines_mpl()
+        .attr("class", "tblMajorGrid")
+  			.attr("transform", "translate("+margin.right+",0)")
+        .call(make_yMajor_gridlines()
             .tickSize(-(width - margin.right))
-            .tickFormat("")
-        )
+            .tickFormat(""))
+            .selectAll(".tick line").filter(function(t){ // Accesses x = 0 line
+              return(t == 0)
+            }).attr("stroke", "#d2d2d2")
+              .attr("stroke-dasharray", "2,1")
+              .style("stroke-width", "1.5px")
+
 
   	svg.append('g')
-  		.attr('transform', 'translate(0,' + height+ ')')
+  		.attr('transform', 'translate(0,' + height + ')')
   		.attr('class', 'x axis')
   		.call(xAxis);
 
@@ -136,19 +144,19 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
   		.attr('class', 'y axis')
   		.call(yAxis);
 
-    svg.append('text')
-  		.attr('x', 5)
-  		.attr('y', height/2)
-  		.attr('class', 'label')
-  		.text('y');
+		svg.append('text')
+			.attr('x', 5)
+			.attr('y', height/2)
+			.attr('class', 'label')
+			.text('y');
 
 
-  	svg.append('text')
-  		.attr('x', width/2)
-  		.attr('y', height + 40)
-  		.attr('text-anchor', 'end')
-  		.attr('class', 'label')
-  		.text('x');
+		svg.append('text')
+			.attr('x', width/2)
+			.attr('y', height + 40)
+			.attr('text-anchor', 'end')
+			.attr('class', 'label')
+			.text('x');
 
   }
 
@@ -160,19 +168,16 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
         .attr('class', 'legend')
         .attr('transform', function(d,i){ return 'translate(25,' + (i + 2) * 20 + ')'; });
 
-		legend.append('circle')
-      .attr('cx', width - 6)
-      .attr('cy', 8)
-      .attr('r', 4)
-      .style('fill', color)
-			.style('stroke', "black")
-			.style('stroke-width', .4)
-;
+		legend.append('rect')
+      .attr('x', width - 15)
+      .attr('width', 15)
+      .attr('height', 15)
+      .style('fill', color);
 
     // add text to the legend elements.
     // rects are defined at x value equal to width, we define text at width - 6, this will print name of the legends before the rects.
     legend.append('text')
-      .attr('x', width + 10)
+      .attr('x', width + 15)
       .attr('y', 8)
       .attr('dy', '.35em')
       .style('text-anchor', 'end')
@@ -186,20 +191,16 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
     		 d.y = +d.y;
     	});
 
-
-
     	var bubble = svg.selectAll('.bubble')
     		.data(data)
     		.enter().append('circle')
     		.attr('class', 'bubble')
     		.attr('cx', function(d){return x(d.x);})
     		.attr('cy', function(d){ return y(d.y); })
-    		.attr('r', 3.5)
-    		.style('stroke', "black")
-        .style('stroke-width', .4)
-    		.style('fill', function(d){ return color(d.class)});
-
-
+    		.attr('r', 4)
+    		.style('stroke', function(d){ return color(d.class)})
+        .style('stroke-width', "1.5px")
+    		.style('fill', "none");
 
       /* CENTROID LOCATOR */
       if(taskNum == 1){
@@ -401,15 +402,14 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
         }
       }
 
-
-	    /* LINE OF BEST FIT */
-			else{
+      /* LINE OF BEST FIT */
+      else{
 
 				svg.on("mousedown", mousedown)
-	         .on("mouseup", mouseup)
-	      var line_on = false;
-	      var line;
-	      var x1, x2, y1, y2;
+           .on("mouseup", mouseup)
+        var line_on = false;
+        var line;
+        var x1, x2, y1, y2;
 
 				function calculateDistance(a, b, c, x, y){
 					var numerator = Math.abs((a*x) - (b*y) + c)
@@ -473,18 +473,18 @@ function mplPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 				function mouseup() {
 						svg.on("mousemove", null);
-						var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
-						var c = y.invert(y1) - (a * (x.invert(x1)))
+						var a = (y2 - y1) / (x2 - x1)
+						var c = y1 - (a * (x1))
 
-						// avgDist = getMeanDistance(a, 1, c);
+						avgDist = getMeanDistance(a, 1, c);
 
 						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
 		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
-		                      (a != 0 || !isNaN(a)))
+		                      (avgDist != 0 || !isNaN(avgDist)))
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
-						// main.avgDist = avgDist;
+						main.avgDist = avgDist;
 						main.slope = a;
 						main.intercept = c;
 

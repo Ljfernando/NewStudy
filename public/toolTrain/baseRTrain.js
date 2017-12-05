@@ -29,7 +29,7 @@ function getClassCentroid(randClass, data){
   return centroid;
 }
 
-function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
+function baseRTrain(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 	var margin = {top: 50, right: 50, bottom: 50, left:50};
 	var width = 600 - margin.left - margin.right;
@@ -180,13 +180,6 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 				 d.y = +d.y;
 			});
 
-			// var intercept = [618.1076,-857.7549,2877.2,-999.5872,322.9724,108.0748,49.56202,212.6294,580.0988,379.8942,401.0538,521.5654,-1113.521,648.0607,697.7696,790.2814]
-			//
-			// intercepts = ""
-			// for(i=0; i < intercept.length; i++){
-			// 	intercepts += y.invert(intercept[i]) + ","
-			// }
-			// console.log("intercepts", intercepts)
 
 			var bubble = svg.selectAll('.bubble')
 				.data(data)
@@ -198,209 +191,6 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 				.style('stroke', function(d){ return color(d.class); })
 				.style('fill', 'none');
 
-
-				/* CENTROID LOCATOR */
-		    if(taskNum == 1){
-
-					// grabbing the centroid coordinates
-					centroid = getClassCentroid(main.class, data)
-					main.xAvg = centroid.xAvg
-					main.yAvg = centroid.yAvg
-
-		      svg.on("mousedown", mousedown)
-		         .on("mouseup", mouseup);
-		        var circle_on = false;
-		        var circle;
-		        var cx, cy;
-		        var attempt = 1
-
-
-
-		      function mousedown() {
-		        if(circle_on){
-		          svg.selectAll("circle.centroid").remove();
-		        }
-		        if(main.clicks == 0){
-		          main.startTime = Date.now()
-		        }
-
-		        var m = d3.mouse(this);
-		        circle = svg.append("circle")
-		          .attr("class", "centroid")
-		            .attr("cx", m[0])
-		            .attr("cy", m[1])
-		            .attr("r", 8)
-		            .style("fill", 'grey')
-								.style("stroke",'black')
-								.style("stroke-width", 1)
-		            .style('opacity', .7);
-
-		          cx = m[0]
-		          cy = m[1]
-
-		          circle_on = true;
-		          svg.on("mousemove", mousemove);
-		      }
-
-		      function mousemove() {
-		        var m = d3.mouse(this);
-
-		        circle.attr("cx", m[0])
-		            .attr("cy", m[1]);
-
-		          cx = m[0]
-		          cy = m[1]
-
-		      }
-
-		      function mouseup() {
-		          svg.on("mousemove", null);
-		          cx = x.invert(cx)
-		          cy = y.invert(cy)
-
-							main.valid = isValidCoor(cx, cy)
-		          main.endTime = Date.now()
-		          main.xCor = cx
-		          main.yCor = cy
-		          main.clicks += 1
-		          main.xErr = Math.sqrt(Math.pow(main.xCor - main.xAvg, 2))
-		          main.yErr = Math.sqrt(Math.pow(main.yCor - main.yAvg, 2))
-		          main.xPErr = Math.abs(main.xErr / main.xAvg)
-		          main.yPErr = Math.abs(main.yErr / main.yAvg)
-
-							if(main.valid){
-                document.getElementById('warning').innerHTML = "";
-                experimentr.release();
-              } else {
-                document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
-                experimentr.hold();
-              }
-		      }
-		    }
-
-		    /* DENSITY BOUNDING BOX */
-		    else if (taskNum == 2) {
-		      svg.on("mousedown", mousedown)
-		         .on("mouseup", mouseup);
-
-					//XY placement of mouse (center of box coordinates)
-					var xUser;
-					var yUser;
-					//boolean used to indicate whether a square has been created
-		      var square_on = false;
-
-					//Creating the local square variable to be accessed by other mouse functions
-		      var square;
-
-					//Creatin object that will hold coordinates of density box. tR -> top right, bL -> bottom left...
-		      var denseBoundaries = {
-		      	"tR" : {"x":0, "y":0},
-		      	"bR" : {"x":0, "y":0},
-		      	"bL" : {"x":0, "y":0},
-		      	"tL" : {"x":0, "y":0}
-		      }
-
-					//Updates denseBoundaries object by inverting the pixelated values to the data domain
-		      function updateBoundaries(xCoor, yCoor){
-		      	denseBoundaries.tR.x = x.invert(xCoor + 25)
-		      	denseBoundaries.tR.y = y.invert(yCoor - 25)
-
-		      	denseBoundaries.bR.x = x.invert(xCoor + 25)
-		      	denseBoundaries.bR.y = y.invert(yCoor + 25)
-
-		      	denseBoundaries.bL.x = x.invert(xCoor - 25)
-		      	denseBoundaries.bL.y = y.invert(yCoor + 25)
-
-		      	denseBoundaries.tL.x = x.invert(xCoor - 25)
-		      	denseBoundaries.tL.y = y.invert(yCoor - 25)
-		      }
-
-					//Computes the number of points within a given boundary box
-					function getDensity(xMax, xMin, yMax, yMin){
-
-						var newData = data.filter(function(d){
-							return d.x < xMax && d.x > xMin && d.y < yMax && d.y > yMin
-						})
-
-						var classData = newData.filter(function(d){
-							return d.class = main.class
-						})
-						return classData.length;
-					}
-
-		      function mousedown() {
-		      	if(square_on){
-		      		svg.selectAll("rect.square").remove();
-		      	}
-
-						if(main.clicks == 0){
-							main.startTime = Date.now()
-						}
-
-		        var m = d3.mouse(this);
-		        square = svg.append("rect")
-		        	.attr("class", "square")
-		        	.attr("width", 50)
-		        	.attr("height", 50)
-		         	.attr("x", m[0] - 25)
-		         	.attr("y", m[1] - 25)
-		    	    .attr("stroke", 'black')
-		    	    .attr("fill", "none");
-
-
-						xUser = x.invert(m[0]);
-						yUser = y.invert(m[1]);
-		      	updateBoundaries(m[0], m[1]);
-
-		        square_on = true;
-		        svg.on("mousemove", mousemove);
-		      }
-
-
-
-		      function mousemove() {
-		      	var m = d3.mouse(this);
-
-		      	square.attr("x", m[0] - 25)
-		             	.attr("y", m[1] - 25);
-
-						xUser = x.invert(m[0]);
-						yUser = y.invert(m[1]);
-
-		      	updateBoundaries(m[0], m[1]);
-
-		      }
-
-		      function mouseup() {
-		          svg.on("mousemove", null);
-
-							var density = getDensity(denseBoundaries.tR.x, denseBoundaries.tL.x, denseBoundaries.tR.y, denseBoundaries.bR.y);
-
-							main.valid = (isValidCoor(denseBoundaries.tR.x, denseBoundaries.tR.y) &&
-														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y) &&
-														isValidCoor(denseBoundaries.tL.x, denseBoundaries.tL.y) &&
-														isValidCoor(denseBoundaries.bR.x, denseBoundaries.bR.y))
-							main.endTime = Date.now();
-							main.timeDiff = main.endTime - main.startTime
-							main.clicks += 1;
-							main.density = density;
-							main.xMax = denseBoundaries.tR.x;
-							main.xMin = denseBoundaries.tL.x;
-							main.yMax = denseBoundaries.tR.y;
-							main.yMin = denseBoundaries.bR.y;
-
-							if(main.valid){
-								document.getElementById('warning').innerHTML = "";
-								experimentr.release();
-							} else {
-								document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled when the highlighted region is in the correct cell.";
-								experimentr.hold();
-							}
-		      }
-		    }
-
-	    /* LINE OF BEST FIT */
-			else{
 
 				svg.on("mousedown", mousedown)
            .on("mouseup", mouseup)
@@ -470,17 +260,18 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat){
 
 				function mouseup() {
 						svg.on("mousemove", null);
-						var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
-						var c = y.invert(y1) - (a * (x.invert(x1)))
-						// avgDist = getMeanDistance(a, 1, c);
+						var a = (y2 - y1) / (x2 - x1)
+						var c = y1 - (a * (x1))
+
+						avgDist = getMeanDistance(a, 1, c);
 
 						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
 		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
-		                      (a != 0 || !isNaN(a)))
+		                      (avgDist != 0 || !isNaN(avgDist)))
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
-						// main.avgDist = avgDist;
+						main.avgDist = avgDist;
 						main.slope = a;
 						main.intercept = c;
 

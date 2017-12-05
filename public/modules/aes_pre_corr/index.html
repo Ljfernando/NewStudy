@@ -7,6 +7,10 @@
 <!-- <script language="javascript" type="text/javascript" src = "../../../data/allData.js"></script> -->
 
 <style>
+body {
+  margin: 1em auto 4em auto;
+  width: 960px;
+}
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -34,7 +38,7 @@ tr:nth-child(even) {
 	<p>
 		<strong>Click anywhere on the plot to begin drawing the line of best fit.</strong>
 	</p>
-		<div id="question"></div>
+		<div><h5 id="question">Click and draw the trend line for class<h5></div>
 		<div id="help"></div>
 		<div id="plot"></div>
 		<div id="difficulty">
@@ -224,7 +228,6 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 				 d.x = +d.x;
 				 d.y = +d.y;
 			});
-
 
 			var bubble = svg.selectAll('.bubble')
 				.data(data)
@@ -509,18 +512,22 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 				function mouseup() {
             validate();
 						svg.on("mousemove", null);
-						var a = (y2 - y1) / (x2 - x1)
-						var c = y1 - (a * (x1))
+						var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
+						var c = y.invert(y1) - (a * (x.invert(x1)))
 
-						avgDist = getMeanDistance(a, 1, c);
+						// avgDist = getMeanDistance(a, 1, c);
 
 						main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
 		                      isValidCoor(x.invert(x1), y.invert(y1)) &&
-		                      (avgDist != 0 || !isNaN(avgDist)));
+		                      (a != 0 || !isNaN(a)));
 						main.endTime = Date.now();
 						main.timeDiff = main.endTime - main.startTime
 						main.clicks += 1;
-						main.avgDist = avgDist;
+            main.x1 = x.invert(x1)
+            main.x2 = x.invert(x2)
+            main.y1 = y.invert(y1)
+            main.y2 = y.invert(y2)
+						// main.avgDist = avgDist;
 						main.slope = a;
 						main.intercept = c;
 
@@ -574,7 +581,7 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 
 		var curr_num = saved["datasetNums"][curr_data] //File number
 		var curr_class = saved["classes"][curr_data]
-    var dataObj = correlationData[curr_num]
+    // var dataObj = correlationData[curr_num]
 
 		taskNum = 3;
 
@@ -589,9 +596,14 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 
 		var storeInfo = {};
 
-		var question = "Click and draw the trend line for class " + taskResponse.class
+		var question = document.getElementById("question").innerHTML + " " + taskResponse.class
 
 		document.getElementById("question").innerHTML = question
+
+    // var para = document.createElement("P");                       // Create a <p> element
+    // var t = document.createTextNode("This is a paragraph.");      // Create a text node
+    // para.appendChild(t);                                          // Append the text to <p>
+    // document.getElementById("myDIV").appendChild(para);
 
 		experimentr.startTimer("aes_task3");
 
@@ -604,10 +616,14 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 
 			// experimentr.addData(data);
 
-      storeInfo[tag+"_avgDist"] = taskResponse.avgDist;
+      // storeInfo[tag+"_avgDist"] = taskResponse.avgDist;
       storeInfo[tag+"_slope"] = taskResponse.slope;
       storeInfo[tag+"_intercept"] = taskResponse.intercept;
       storeInfo[tag+"_diff"] = taskResponse.diff;
+      storeInfo[tag+"_x1"] = taskResponse.x1;
+      storeInfo[tag+"_x2"] = taskResponse.x2;
+      storeInfo[tag+"_y1"] = taskResponse.y1;
+      storeInfo[tag+"_y2"] = taskResponse.y2;
 			storeInfo["data_idx"] = curr_data + 1
 			storeInfo["curr_question"] = curr_question + 1
 
