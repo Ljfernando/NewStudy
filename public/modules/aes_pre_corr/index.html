@@ -318,9 +318,6 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 				var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
 				var c = y.invert(y1) - (a * (x.invert(x1)))
 
-		        // setInterval(function(){
-		        //   validate(x1, x2, y1, y2, a, main.diff)}, 100); // Checking user input is valid every 1/10 of a second
-
 
 				main.endTime = Date.now();
 				main.timeDiff = main.endTime - main.startTime
@@ -336,11 +333,12 @@ function baseRPlot(taskNum, file, xRange, yRange, xDom, yDom, xFormat, yFormat, 
 					            isValidCoor(x.invert(x1), y.invert(y1)) &&
 					            (a != 0 || !isNaN(a)))
 
+
 				d3.selectAll('input')
-				    .filter(function(d) { return this.name === 'difficulty' ? this : null; })
+				    .filter(function(d) { return this.name == 'difficulty'})
 				    .on('change', function() { main.diff = this.value; validate()});
 
-				console.log("diff",)
+
 				function validate(){
 					if(main.diff!= null && is_valid){
 						experimentr.release()

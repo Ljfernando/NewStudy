@@ -109,9 +109,15 @@ function isValidCoor(x, y){
   return false;
 }
 
-var saved = experimentr.data();
-var curr_num = saved["datasetNums"][0]
-var curr_class = saved["classes"][0]
+function getRandomInteger(lower, upper) {
+  console.assert(arguments.length === 2, "getRandomInteger() requires lower and upper parameters.");
+  return Math.floor(Math.random() * (upper - lower)) + lower;
+}
+
+
+var classes = ["A", "B", "C", "D"]
+var curr_num = getRandomInteger(1,16)
+var curr_class = classes[getRandomInteger(0,4)]
 
 var main = {"clicks" : 0,
             "startTime":null,
@@ -408,7 +414,7 @@ d3.csv(main.dataFile, function(error, data){
   		experimentr.endTimer('task3-intro');
       var storeInfo = {}
       //Restarting data index and incrementing current question
-      storeInfo["data_idx"] = 1 //Starting at 1 since training begins with first dataset and class
+      storeInfo["data_idx"] = 0 //Starting at 1 since training begins with first dataset and class
       storeInfo["curr_question"] = curr_question + 1
       console.log("info", storeInfo);	//TODO remove debugging
       experimentr.addData(storeInfo);
