@@ -53,9 +53,6 @@ count = 0
 		}
 	}
 
-// console.log("data nums", datasetNums)
-// console.log("classes", classes)
-// console.log("indexes", indexes)
 // Randomizes the arrays above
 function randomizeArray(array){
 	for (var i = 0; i < array.length; i++) {
@@ -70,7 +67,6 @@ function randomizeArray(array){
 
 randIndex = randomizeArray(indexes)
 
-// console.log("randInd", randIndex)
 newDataNums = []
 newClasses = []
 for (var i = 0; i < randIndex.length; i ++){
@@ -78,12 +74,12 @@ for (var i = 0; i < randIndex.length; i ++){
 	newClasses.push(classes[randIndex[i]])
 }
 
-// console.log("newData", newDataNums)
-// console.log("newClass", newClasses)
 
 var modules = [
   // 'modules/aes_test',
   'modules/aes_consent/',
+    'modules/aes_demographics/',
+
   'modules/aes_task3_intro',
 	'modules/aes_pre_corr',
   'modules/aes_pre_corr',

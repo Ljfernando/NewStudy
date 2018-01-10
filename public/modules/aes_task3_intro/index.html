@@ -2,14 +2,31 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <link rel="stylesheet" type="text/css" href="toolCSS/baseRStyle.css" />
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td, th {
+
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
 <div id="task3-intro">
 
 <div class="w3-light-grey w3-round-xlarge">
   <div id="progressBar" class="w3-container w3-blue w3-round-large w3-center">2%</div>
 </div>
 
-<h2 class="placeholder">Task 3 Training</h2>
+<h2 class="placeholder">Fitting A Linear Trend Line (Tutorial)</h2>
 <p>
   The next section will test your ability to identify a linear trend in the data.
   To do this, you will draw a straight line through the points of a particular class.
@@ -19,17 +36,44 @@
 <p>
   The image below shows a line drawn through the class D. Notice that it lies nicely in the
   middle of the set of points and its slope matches the overall trend of class D.
-<img src="images/lbf_image.png" width = 400>
-<p class="center">
-  <strong>Try it out below! Press and drag on the plot below to draw your line for class A.</strong>
+<img src="images/lbf_image.png" width=400 style="margin-left:150px">
+<br>
+  This next image shows a poorly drawn line for the same class D.
+<img src="images/lbf_image_bad.png" width=400 style="margin-left:150px">
+<p>
+  <strong>Try it out below!</strong>
   A good line will minimize the distance between itself and all the points.
-  The minimum distance between your line and class A is located above the plot.
+  The minimum distance between your line and the specified class is located above the plot.
   Then your best drawn line will be shown in orange and the minimum distance is provided as text as well.
 </p>
 </div>
-<div id="plot">
+<div class="center"><h5>Click and draw the trend line for class <strong id="question"></strong></h5></div>
+<div id="plot" class="center"> </div>
+<div id="difficulty">
+  <p> You will also be asked to determine how difficult you believe it is to perform this task on the specified class given this set of data.
+  <div>
+    <table>
+      <tr>
+        <th>Very Easy</th>
+        <th>Easy</th>
+        <th>Neutral</th>
+        <th>Difficult</th>
+        <th>Very Difficult</th>
+      </tr>
+      <tr>
+        <td><input type="radio" id="diff" name="difficulty" value="1"></td>
+        <td><input type="radio" id="diff" name="difficulty" value="2"></td>
+        <td><input type="radio" id="diff" name="difficulty" value="3"></td>
+        <td><input type="radio" id="diff" name="difficulty" value="4"></td>
+        <td><input type="radio" id="diff" name="difficulty" value="5"></td>
+      </tr>
+    </table>
+  </div>
+</div><br>
 
-<div id="warning"></div>
+
+<div id="warning">Warning: The "Next" button will only be enabled after you provide a valid line and indicate the difficulty.</div>
+<p> After clicking the next button you will perform this task on different datasets for different classes. Refer to the bar at the top to check your progress.</p>
 
 </div>
 <script>
@@ -51,11 +95,11 @@ var classColors = ["black", "#FF0000", "#33cc33" , "#0000FF"]
 
 
 //Change for other tools
-xRange = [-2, 5, 2];
-yRange = [-4, 4, 2];
+xRange = [-4, 5, 2];
+yRange = [-4, 5, 2];
 
-xDom = [-3, 4];
-yDom = [-4, 4];
+xDom = [-5, 5];
+yDom = [-5, 5];
 
 
 function isValidCoor(x, y){
@@ -65,12 +109,17 @@ function isValidCoor(x, y){
   return false;
 }
 
+var saved = experimentr.data();
+var curr_num = saved["datasetNums"][0]
+var curr_class = saved["classes"][0]
+
 var main = {"clicks" : 0,
             "startTime":null,
             "endTime":null,
-            "dataFile": '../../data/correlation_intro.csv',
-						"class":"A"
+            "dataFile": "data/rescaled_150/" + curr_num + ".csv",
+						"class":curr_class
           }
+document.getElementById("question").innerHTML = curr_class
 
 var svg = d3.select('#plot')
   .append('svg')
@@ -245,6 +294,10 @@ d3.csv(main.dataFile, function(error, data){
    var minFit = Infinity;
 	 var x1, x2, y1, y2;
 
+  d3.selectAll('input')
+    .filter(function(d) { return this.name === 'difficulty' ? this : null; })
+    .on('change', function() { main.diff = this.value; validate(x1,x2,y1,y2,a)});
+
 	 function mousedown() {
 		 if(line_on){
 			 svg.selectAll("line.bestFitLine").remove();
@@ -281,12 +334,16 @@ d3.csv(main.dataFile, function(error, data){
 
 	 }
 
-	 function mouseup() {
-			 svg.on("mousemove", null);
-       main.valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
-                     isValidCoor(x.invert(x1), y.invert(y1)) &&
-                     (avgDist != 0 || !isNaN(avgDist)))
+    function mouseup() {
 
+        validate();
+
+        svg.on("mousemove", null);
+        var a = (y.invert(y2) - y.invert(y1)) / (x.invert(x2) - x.invert(x1))
+        var c = y.invert(y1) - (a * (x.invert(x1)))
+
+
+      //Updating minimum fit text
       if (avgDist <  minFit){
         svg.selectAll("line.bestFitLineMin").remove();
         line = svg.append("line")
@@ -301,20 +358,42 @@ d3.csv(main.dataFile, function(error, data){
          lbfTextMin.text((Math.round(minFit* 100)/ 100));
       }
 
-      if(main.valid){
-      		document.getElementById('warning').innerHTML = "";
-      		experimentr.release();
-      	} else {
-      		document.getElementById('warning').innerHTML = "Warning: The \"Next\" button will only be enabled after you provide a valid line of best fit.";
-      		experimentr.hold();
-      }
-	 }
 
+        main.endTime = Date.now();
+        main.timeDiff = main.endTime - main.startTime
+        main.clicks += 1;
+        main.x1 = x.invert(x1)
+        main.x2 = x.invert(x2)
+        main.y1 = y.invert(y1)
+        main.y2 = y.invert(y2)
+        main.slope = a;
+        main.intercept = c;
+
+        var is_valid = (isValidCoor(x.invert(x2), y.invert(y2)) &&
+              isValidCoor(x.invert(x1), y.invert(y1)) &&
+              (a != 0 || !isNaN(a)))
+
+
+        d3.selectAll('input')
+          .filter(function(d) { return this.name === 'difficulty' ? this : null; })
+          .on('change', function() { main.diff = this.value; validate()});
+
+        function validate(){
+          if(main.diff != null && is_valid){
+            experimentr.release();
+          } else{
+            experimentr.hold();
+          }
+        }
+
+    }
 });
 </script>
 
 <script>
+
 	(function() {
+    experimentr.hold();
     // Updating question number
     var saved = experimentr.data();
     curr_question = saved["curr_question"];
@@ -324,12 +403,12 @@ d3.csv(main.dataFile, function(error, data){
     progBar.innerHTML = String(Math.round((curr_question/ total_questions) * 100)) + '%'
 
 		experimentr.startTimer('task3-intro');
-		experimentr.release();
+
 		experimentr.onNext(function() {
-			experimentr.endTimer('task3-intro');
+  		experimentr.endTimer('task3-intro');
       var storeInfo = {}
       //Restarting data index and incrementing current question
-      storeInfo["data_idx"] = 0
+      storeInfo["data_idx"] = 1 //Starting at 1 since training begins with first dataset and class
       storeInfo["curr_question"] = curr_question + 1
       console.log("info", storeInfo);	//TODO remove debugging
       experimentr.addData(storeInfo);

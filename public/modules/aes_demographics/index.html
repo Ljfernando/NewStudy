@@ -1,5 +1,7 @@
 <link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+
 <div class="w3-light-grey w3-round-xlarge">
   <div id="progressBar" class="w3-container w3-blue w3-round-xlarge w3-center"></div>
 </div>
@@ -107,12 +109,12 @@
   .on('change', function() { data.job = this.value; validate(); });
 
   function validate() {
-	  if(data.age && data.sex && data.degree && data.job) {
+	  // if(data.age && data.sex && data.degree && data.job) {
 	    experimentr.endTimer('demo');
 	    experimentr.addData(data);
       console.log("info", data)
 	    experimentr.release();
-	  }
+	  // }
 	}
 }());
 </script>
