@@ -394,9 +394,6 @@ d3.csv(main.dataFile, function(error, data){
 
     }
 });
-</script>
-
-<script>
 
 	(function() {
     experimentr.hold();
@@ -416,6 +413,10 @@ d3.csv(main.dataFile, function(error, data){
       //Restarting data index and incrementing current question
       storeInfo["data_idx"] = 0 //Starting at 1 since training begins with first dataset and class
       storeInfo["curr_question"] = curr_question + 1
+
+      //Adding training dataset to output
+      storeInfo["train_class"] = curr_class;
+      storeInfo["train_num"] = curr_num;
       console.log("info", storeInfo);	//TODO remove debugging
       experimentr.addData(storeInfo);
 

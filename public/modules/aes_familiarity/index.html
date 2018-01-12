@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="toolCSS/plot.css" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
 
 <style>
 table {
@@ -29,7 +30,56 @@ tr:nth-child(even) {
 
 <div>
   <h2 class="placeholder">Familiarity</h2>
-  <img <img class="pure-img" src="images/scatterplots/seaborn2.png" width=450px height=450px>
+</div>
+<br><br>
+<div id="create">Please indicate how often you create your own data visualizations.
+    <div id="create"><br>
+      <table>
+        <tr>
+          <th>Never</th>
+          <th>Once a year</th>
+          <th>Once a month</th>
+          <th>Once a week</th>
+          <th>Daily</th>
+        </tr>
+        <tr>
+          <td><input type="radio" id="d1" name="create" value="Never"></td>
+          <td><input type="radio" id="d2" name="create" value="Year"></td>
+          <td><input type="radio" id="d3" name="create" value="Month"></td>
+          <td><input type="radio" id="d4" name="create" value="Week"></td>
+          <td><input type="radio" id="d5" name="create" value="Daily"></td>
+        </tr>
+      </table>
+
+    </div>
+</div>
+<br><br>
+<div id="change">When you create your own visualizations, how often do you change the default styles (e.g. color, font, ticks, legends, etc.)?
+    <div id="change"><br>
+      <table>
+        <tr>
+          <th>Never</th>
+          <th>Rarely</th>
+          <th>Occasionally</th>
+          <th>Often</th>
+          <th>Always</th>
+        </tr>
+        <tr>
+          <td><input type="radio" id="d1" name="change" value="Never"></td>
+          <td><input type="radio" id="d2" name="change" value="Rarely"></td>
+          <td><input type="radio" id="d3" name="change" value="Occasionally"></td>
+          <td><input type="radio" id="d4" name="change" value="Often"></td>
+          <td><input type="radio" id="d5" name="change" value="Always"></td>
+
+        </tr>
+      </table>
+
+    </div>
+</div>
+
+<br><br>
+<div>
+    <img <img class="pure-img" src="images/scatterplots/seaborn2.png" width=450px height=450px>
   <p>
     Pictured above is a <strong>multi-class scatterplot</strong> visualization. It compares two variables on the x and y axis respectively and encodes a third categorical variable as color. The legend for class colors can be found in the top-right corner.  </p>
 </div>
@@ -82,7 +132,8 @@ tr:nth-child(even) {
 </div>
 
 
-<br><br>
+<!-- Commenting out section below for preliminary study -->
+<!-- <br><br>
 <div id="tools"> Below is a list of tools that are used to visualize data. Please indicate your familiarity with each tool.<br>
     <br>
     <table>
@@ -140,7 +191,7 @@ tr:nth-child(even) {
       </tr>
     </table>
 </div>
-
+ -->
 <script>
 (function() {
 
@@ -156,6 +207,15 @@ tr:nth-child(even) {
   experimentr.startTimer('aes_familiarity');
 
   d3.selectAll('input')
+  .filter(function(d) { return this.name === 'create' ? this : null; })
+  .on('change', function() { data.create = this.value; validate(); });
+
+  d3.selectAll('input')
+  .filter(function(d) { return this.name === 'change' ? this : null; })
+  .on('change', function() { data.change = this.value; validate(); });
+
+
+  d3.selectAll('input')
   .filter(function(d) { return this.name === 'comfort' ? this : null; })
   .on('change', function() { data.comfort = this.value; validate(); });
 
@@ -163,28 +223,29 @@ tr:nth-child(even) {
   .filter(function(d) { return this.name === 'usage' ? this : null; })
   .on('change', function() { data.usage = this.value; validate(); });
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'exl' ? this : null; })
-  .on('change', function() { data.exlFam = this.value; validate(); });
+  // d3.selectAll('input')
+  // .filter(function(d) { return this.name === 'exl' ? this : null; })
+  // .on('change', function() { data.exlFam = this.value; validate(); });
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'tbl' ? this : null; })
-  .on('change', function() { data.tblFam = this.value; validate(); });
+  // d3.selectAll('input')
+  // .filter(function(d) { return this.name === 'tbl' ? this : null; })
+  // .on('change', function() { data.tblFam = this.value; validate(); });
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'mpl' ? this : null; })
-  .on('change', function() { data.mplFam = this.value; validate(); });
+  // d3.selectAll('input')
+  // .filter(function(d) { return this.name === 'mpl' ? this : null; })
+  // .on('change', function() { data.mplFam = this.value; validate(); });
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'ggp' ? this : null; })
-  .on('change', function() { data.ggpFam = this.value; validate(); });
+  // d3.selectAll('input')
+  // .filter(function(d) { return this.name === 'ggp' ? this : null; })
+  // .on('change', function() { data.ggpFam = this.value; validate(); });
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'baseR' ? this : null; })
-  .on('change', function() { data.baseRFam = this.value; validate(); });
+  // d3.selectAll('input')
+  // .filter(function(d) { return this.name === 'baseR' ? this : null; })
+  // .on('change', function() { data.baseRFam = this.value; validate(); });
 
   function validate() {
-	  if(data.comfort && data.usage && data.exlFam && data.tblFam && data.mplFam && data.ggpFam && data.baseRFam) {
+	  // if(data.comfort && data.usage && data.exlFam && data.tblFam && data.mplFam && data.ggpFam && data.baseRFam) {
+      if(data.create && data.change && data.comfort && data.usage){
 	    experimentr.endTimer('aes_familiarity');
 	    experimentr.addData(data);
 	    experimentr.release();

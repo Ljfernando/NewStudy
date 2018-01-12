@@ -109,12 +109,12 @@
   .on('change', function() { data.job = this.value; validate(); });
 
   function validate() {
-	  // if(data.age && data.sex && data.degree && data.job) {
+	  if(data.age && data.sex && data.degree && data.job) {
 	    experimentr.endTimer('demo');
 	    experimentr.addData(data);
       console.log("info", data)
 	    experimentr.release();
-	  // }
+	  }
 	}
 }());
 </script>
